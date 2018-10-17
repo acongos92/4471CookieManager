@@ -1,5 +1,5 @@
 {
-    "name": "Cookie Manager",
+    "name": "Cookie_Manager",
     "version": "1.0",
     "description": "Understand how websites are interacting with your cookies",
     "permissions": ["activeTab","declarativeContent","storage"],
