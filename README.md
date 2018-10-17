@@ -1,2 +1,11 @@
 # 4471CookieManager
-# TODO: Make Readme
+
+# File Descriptions 
+
+...
+
+## Manifest 
+
+... 
+
+Holds all permissions requested by the extension, as well as script and popup information 
