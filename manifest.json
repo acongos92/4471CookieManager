@@ -7,6 +7,7 @@
         "declarativeContent",
         "storage",
         "webRequest",
+        "webRequestBlocking",
         "contentSettings",
         "<all_urls>"
     ],
