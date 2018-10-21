@@ -9,3 +9,11 @@ chrome.runtime.onInstalled.addListener(function() {
     console.log("The color is green.");
   });
 });
+
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+    return {cancel: details.url.indexOf("://www.evil.com/") != -1};
+  },
+  {urls: ["<all_urls>"]},
+  ["blocking"]); // "blocking" must be present to synchronously modify the request
+});
