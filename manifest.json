@@ -2,14 +2,23 @@
     "name": "Cookie Manager",
     "version": "1.0",
     "description": "Understand how websites are interacting with your cookies",
-    "permissions": ["cookies","activeTab","declarativeContent","storage", "http://*.com/"],
+    "permissions": [
+        "activeTab",
+        "declarativeContent",
+        "storage",
+        "webRequest",
+        "webRequestBlocking",
+        "contentSettings",
+        "<all_urls>",
+        "cookies"
+    ],
     "background": {
       "scripts": [ "background.js"],
-      "persistent": false
+      "persistent": true
     },
     "browser_action": {
       "default_popup": "popup.html",
       "default_title": "Cookie Info"
     },
-    "manifest_version": 2
+    "manifest_version": 3
   }
