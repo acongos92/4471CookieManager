@@ -2,20 +2,21 @@
 /*
  * Calls chrome storage APi to get all cookies. calls writeCookieCount to display
  */ 
-function getCookieCountAsync(){
-    chrome.cookies.getAll({}, function(store){
-        writeCookieCount(store.length)
-        let uniqueDomains = countUniqueDomains(store);
-        writeUniqueDomainCount(uniqueDomains);
-        console.log(store);
+function populateCookieData(){
+    chrome.cookies.getAll({}, function(cookies){
+        let cookieDataManager = setupDataManager(cookies);
+        writeCookieCount(cookieDataManager.getTotalCookieCount())
+        writeUniqueDomainCount(cookieDataManager.getUniqueDomainCounts());
     });
 }
 
-/*
- * Gets a count of cookies and displays on the popup
+/**
+ * sets up the data manager object
+ * @param {} cookies 
  */
-function getCookieCount(){
-    getCookieCountAsync();
+function setupDataManager(cookies){
+    var dataManager = new CookieDataManager(cookies);
+    return dataManager;
 }
 
 /*
@@ -34,18 +35,5 @@ function writeUniqueDomainCount(count){
     uniqueDomains.innerHTML = "unique domains: " + count;
 }
 
-/*
- * counts the unique cookie domains 
- */
-function countUniqueDomains(cookies){
-    let uniques = [];
-    for (let i = 0; i < cookies.length; i++){
-        if(!uniques.includes(cookies[i].domain)){
-            uniques.push(cookies[i].domain)
-        }
-    }
-    return uniques.length;
-}
 
-
-getCookieCount();
+populateCookieData();
