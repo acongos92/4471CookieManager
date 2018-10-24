@@ -1,3 +1,16 @@
+/*
+ * Listener for cookie added messages 
+ */
+
+ chrome.runtime.onMessage.addListener(
+     function(request, sender, sendResponse){
+         if(request.message == "cookieAdded"){
+             console.log(request.cookie);
+
+         }
+     }
+ );
+
 
 /*
  * Calls chrome storage APi to get all cookies. calls writeCookieCount to display
@@ -35,5 +48,7 @@ function writeUniqueDomainCount(count){
     uniqueDomains.innerHTML = "unique domains: " + count;
 }
 
+chrome.cookies.remove({"url" : "http://doubleclick.net", "name": "IDE" }, function(details){
 
+});
 populateCookieData();

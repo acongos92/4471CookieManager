@@ -14,7 +14,6 @@
         this.cookies = cookies; 
         this.uniqueDomains = [];
         this.countUniqueDomains();
-        console.log(this.cookies);
     }
 
     /**
