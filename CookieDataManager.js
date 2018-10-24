@@ -14,6 +14,7 @@
         this.cookies = cookies; 
         this.uniqueDomains = [];
         this.countUniqueDomains();
+        console.log(this.cookies);
     }
 
     /**
@@ -23,7 +24,6 @@
     /**
      * returns total number of cookie objects 
      */
-
      getTotalCookieCount() {
          return this.cookies.length;
      }
@@ -32,7 +32,6 @@
       * returns the number of unique domains within this.cookies 
       */
     getUniqueDomainCounts(){
-        console.log(this.uniqueDomains);
         return this.uniqueDomains.length;
     }
 
