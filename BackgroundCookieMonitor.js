@@ -1,52 +1,92 @@
-/**
- * some object definitions 
- * RecentCookieData{
- *                  name: "string cookie name"
- *                  domain: "string cookie domain"
- *                  storeTime: "datetime this object was added to storage"
- *                  }
- * RecentCookies {
- *                  data: [] //an array of RecentCookieData
- *               }
- * 
- * BlockedDomainData{
- *                  domain: "string blocked domain"
- *
- *                  }
- * 
- * BlockedDomains {
- *                  domains[] //an array of BlockedDomainData
- *                }
- */
-function addCookieToRecentStorage(recentCookieData){
-    
+//Expects access to scripts SotrageObjectModels.js and CookieDataManager.js
+ /**
+  * adds a cookie to recent storage, does basic recent storage managemnet including ensuring 
+  * no more than 6 cookies are present in recent storage, and that no recent storage entry 
+  * exceeds max minimum storage time
+  * @param {*} cookie 
+  */
+
+
+function addCookieToRecentStorage(result, cookie){
+    let storedArray = result.RecentCookies.data;
+    while(storedArray.length >= 6){
+        storedArray.shift();
+    }
+    storedArray.push(buildCookieStorageEntry(cookie));
+    result.data = storedArray;
+    chrome.storage.local.set({"RecentCookies" : result}, function(){
+        //dont care for now
+    });
 }
+
+/**
+ * builds the recent storage object and adds the first cookie to it, shouldnt occur but if storage gets corrupted 
+ * or dropped somehow after extension installation this should handle it
+ * @param {} cookie 
+ */
+function createStorageEntryAndAddCookie(cookie){
+    let RecentCookieData = buildCookieStorageEntry(cookie);
+    let RecentCookies = buildRecentCookies();
+    RecentCookies.data = [RecentCookieData];
+    chrome.storage.local.set({"RecentCookies" : RecentCookies}, function(){
+        //dont care for now 
+    });
+}
+
 function checkStorageResult(result, cookie){
     //this storage entry existed
-    alert("entered new thing");
-    let RecentCookieData = {
-        name : cookie.name,
-        domain : cookie.domain,
-        storeTime : "2018"
-    }
     if (result.RecentCookies){
-        addCookieToRecentStorage(RecentCookieData);
+        addCookieToRecentStorage(result, cookie)
     }else {
-        let arr = [RecentCookieData];
-        let RecentCookies = {
-            data : arr
-        }
-        chrome.storage.local.set({"RecentCookies" : RecentCookies});
+        createStorageEntryAndAddCookie(cookie);
     }
 }
 
-function getRecentCookiesAndAddIfNeeded(cookie){
+function addNewCookieToRecentStorage(cookie){
     chrome.storage.local.get("RecentCookies", function(result){
         checkStorageResult(result, cookie)
     });
 }
+
+function getRecentCookiesAndAddOrDelete(cookie){
+    chrome.storage.local.get("BlockedDomains", function(result){
+        if (result.BlockedDomains && result.BlockedDomains.domains.includes(cookie.domain)){
+            console.log("Blocking cookie from domain " + cookie.domain)
+            deleteBlockedCookie(cookie.name, cookie.domain);
+        }else{
+            addNewCookieToRecentStorage(cookie);
+        }
+    });
+}
+
+function incrementBlockedCookieCount(){
+    chrome.storage.local.get("BlockedCookieCount", function(result){
+        if(result.BlockedCookieCount != null){
+            result.BlockedCookieCount++;
+            chrome.storage.local.set({"BlockedCookieCount" : result.BlockedCookieCount}, function(){
+                //not interested in the result of this callback right now 
+            })
+        }
+    })
+}
+
+/**
+ * removes a cookie from storage
+ * @param {} cookieName 
+ * @param {*} cookieDomain 
+ */
+function deleteBlockedCookie(cookieName, cookieDomain){
+    let qualifiedDomain = "http://" + cookieDomain; 
+    chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
+        incrementBlockedCookieCount();
+    });
+}
+
+/**
+ * listens for an "explicit" cookie update meaning one has been removed or set 
+ */
 chrome.cookies.onChanged.addListener(function(changeInfo){
     if(changeInfo.cause == "explicit"){
-        getRecentCookiesAndAddIfNeeded(changeInfo.cookie)
+        getRecentCookiesAndAddOrDelete(changeInfo.cookie)
     }
 });

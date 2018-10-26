@@ -5,12 +5,16 @@
  chrome.runtime.onMessage.addListener(
      function(request, sender, sendResponse){
          if(request.message == "cookieAdded"){
-             console.log(request.cookie);
 
          }
      }
  );
-
+let BlockedDomains = {
+    domains: [".aaxads.com", ".scorecardresearch.com"]
+}
+chrome.storage.local.set({"BlockedDomains" : BlockedDomains}, function(){
+    //delete this fame 
+});
 
 /*
  * Calls chrome storage APi to get all cookies. calls writeCookieCount to display
@@ -48,7 +52,22 @@ function writeUniqueDomainCount(count){
     uniqueDomains.innerHTML = "unique domains: " + count;
 }
 
-chrome.cookies.remove({"url" : "http://doubleclick.net", "name": "IDE" }, function(details){
+/*
+ *
+ */
+function writeRecentCookieData(recentCookieArr){
+    let recentCookieInfo = document.getElementById("recentCookieInfo");
+    recentCookieInfo.innerHTML = "Hab dis many: " + recentCookieArr.length;
+}
 
-});
+function setupRecentCookieFields(){
+    chrome.storage.local.get("RecentCookies", function(result){
+        if(result.RecentCookies){
+            writeRecentCookieData(result.RecentCookies.data);
+        }
+    })
+}
+
+
 populateCookieData();
+setupRecentCookieFields();
