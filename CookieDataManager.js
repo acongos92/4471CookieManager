@@ -5,7 +5,6 @@
  */
 
  class CookieDataManager {
-
     /**
      * takes a cookie object and sets up other common member variables 
      * @param {*} cookies a chrome Cookie object
@@ -15,7 +14,6 @@
         this.uniqueDomains = [];
         this.countUniqueDomains();
     }
-
     /**
      * publicy accesible methods 
      */

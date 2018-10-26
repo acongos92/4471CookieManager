@@ -18,14 +18,25 @@
  *                  domains[] //an array of BlockedDomainData
  *                }
  */
-function addCookieToRecentStorage(cookie){
-
+function addCookieToRecentStorage(recentCookieData){
+    
 }
-
 function checkStorageResult(result, cookie){
     //this storage entry existed
+    alert("entered new thing");
+    let RecentCookieData = {
+        name : cookie.name,
+        domain : cookie.domain,
+        storeTime : "2018"
+    }
     if (result.RecentCookies){
-        
+        addCookieToRecentStorage(RecentCookieData);
+    }else {
+        let arr = [RecentCookieData];
+        let RecentCookies = {
+            data : arr
+        }
+        chrome.storage.local.set({"RecentCookies" : RecentCookies});
     }
 }
 
