@@ -51,7 +51,6 @@ function addNewCookieToRecentStorage(cookie){
 function getRecentCookiesAndAddOrDelete(cookie){
     chrome.storage.local.get("BlockedDomains", function(result){
         if (result.BlockedDomains && result.BlockedDomains.domains.includes(cookie.domain)){
-            console.log("Blocking cookie from domain " + cookie.domain)
             deleteBlockedCookie(cookie.name, cookie.domain);
         }else{
             addNewCookieToRecentStorage(cookie);

@@ -18,6 +18,10 @@
      * publicy accesible methods 
      */
 
+    getCookieArr(){
+        return this.cookies;
+    }
+
     /**
      * returns total number of cookie objects 
      */

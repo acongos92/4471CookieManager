@@ -4,13 +4,26 @@
       <link rel="stylesheet" type="text/css" href="popupStyle.css">
   </head>
   <body>
-    <div class=countContent>
+    <div class="countContent">
+      <h3>Total Cookie Data</h3>
       <p id = "cookieCount"></p>
       <p id ="uniqueCookieDomains"></p>
-      <p id ="recentCookieInfo"></p>
-      <script src = "StorageObjectModels.js"></script>
-      <script src="CookieDataManager.js"></script>
-      <script src="Popup.js"></script>
+      <div id="cookieBlockerPanel">
+        <h3>Recent Cookie Data</h3>
+        <p id ="recentCookieInfo"></p>
+        <table id="recentCookieTable">
+          <thead>
+            <th>Name</th>
+            <th>Domain</th>
+            <th>Remove</th>
+            <th>Block Domain</th>
+          </thead>
+        </table>
+      </div>
     </div>
+    <script src = "StorageObjectModels.js"></script>
+    <script src="CookieDataManager.js"></script>
+    <script src ="PopupMVC.js"></script>
+    <script src="Popup.js"></script>
   </body>
 </html>
