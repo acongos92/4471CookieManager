@@ -12,6 +12,7 @@ class PopupView {
         this.uniqueDomains = document.getElementById("uniqueCookieDomains");
         this.recentCookies = document.getElementById("recentCookieInfo");
         this.buttonPanel = document.getElementById("cookieBlockerPanel");
+        this.recentCookieTable = document.getElementById("recentCookieTable");
         this.popupController = popupController;
         //defines the maximum string length which can be displayed in cookie table
         this.maxStringLength = 11;
@@ -33,9 +34,8 @@ class PopupView {
         this.recentCookies.innerHTML = recentCookieString;
      }
 
-     addNewRecentCookie(cookieName, cookieDomain){
-         let table = document.getElementById("recentCookieTable");
-         let row = table.insertRow(table.rows.length);
+     addNewRecentCookieNameAndDomain(cookieName, cookieDomain){
+         let row = this.recentCookieTable.insertRow(this.recentCookieTable.rows.length);
          let cell1 = row.insertCell(0);
          if (cookieName.length > this.maxStringLength){
              cell1.innerHTML = cookieName.substring(0, this.maxStringLength) + " ...";
@@ -48,8 +48,28 @@ class PopupView {
          }else {
             cell2.innerHTML = cookieDomain;
          }
-
+        let popupControllerRef = this.popupController;
+        let deleteBtn = document.createElement("BUTTON");
+        deleteBtn.innerHTML = "delete";
+        let cell3 = row.insertCell(2);
+        cell3.appendChild(deleteBtn);
+        let cell4 = row.insertCell(3);
+        let blockBtn = document.createElement("BUTTON");
+        blockBtn.innerHTML = "block";
+        cell4.appendChild(blockBtn);
+        deleteBtn.addEventListener("click", function() {popupControllerRef.deleteCookieClicked(row.rowIndex)}, false);
+        blockBtn.addEventListener("click", function(){popupControllerRef.blockDomainClicked(row.rowIndex)}, false);
      }
+
+     /**
+      * removes a row from this.recentCookies
+      * @param {} rowNumber 
+      */
+     removeRecentCookieRowFromView(rowNumber){
+        this.recentCookieTable.deleteRow(rowNumber);
+     }
+
+
 
 }
 
@@ -75,11 +95,62 @@ class PopupController {
         let recents = this.model.getRecentCookieArray();
         this.view.writeRecentCookieCount("Recently Added Cookies: " + recents.length);
         for(let i = 0; i < recents.length; i++){
-            this.view.addNewRecentCookie(recents[i].name, recents[i].domain);
+            this.view.addNewRecentCookieNameAndDomain(recents[i].name, recents[i].domain);
         }
 
     }
 
+    /**
+     * removes a single cookie from browser storage
+     * rowNumber corresponds to an index in recentCookieArray - 1 
+     * I.E if rowNumber = 1 then the corresponding index of recentCookieArray
+     * is 0 
+     * @param {} rowNumber 
+     */
+    deleteCookieClicked(rowNumber){
+        let model = this.model.getRecentCookieArray();
+        let qualifiedDomain = "http://"  + model[rowNumber - 1].domain;
+        let cookieName = model[rowNumber - 1].name
+        //remove cookie from browser storage
+        let modelRef = this.model; 
+        let controllerRef = this;
+        chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
+            console.log(details);
+            //update the model counters 
+            modelRef.setupStoredCookieData(modelRef, controllerRef);
+        });
+        //remove cookie from extension storage
+        this.removeCookieFromExtensionRecentStorage(model[rowNumber -1].name, model[rowNumber -1].domain);
+        //update model
+        this.model.removeEntryFromRecents(rowNumber -1);
+        this.view.writeRecentCookieCount("Recently Added Cookies: " + this.model.getRecentCookieArray().length);
+        //update view
+        this.view.removeRecentCookieRowFromView(rowNumber);
+    }
+
+    /**
+     * responds to block domain clicked event. permanantly blocks a domain 
+     * from storing cookie on browser
+     * @param {} rowNumber 
+     */
+    blockDomainClicked(rowNumber){
+        alert("row " + rowNumber + " clicked");
+    }
+
+    removeCookieFromExtensionRecentStorage(name, domain){
+        chrome.storage.local.get("RecentCookies", function(result){
+            if (result.RecentCookies && result.RecentCookies.data){
+                for (let i = 0; i < result.RecentCookies.data.length; i++){
+                    if (result.RecentCookies.data[i].name == name && result.RecentCookies.data[i].domain == domain){
+                        result.RecentCookies.data.splice(i, 1);
+                    }
+                }
+                chrome.storage.local.set({"RecentCookies" : result.RecentCookies}, function(){
+                    //callback, dont care about result for now
+                })
+            }
+        });
+    }
 
 }
 
@@ -88,8 +159,8 @@ class PopupController {
  * retrieval
  */
 class PopupModel {
+
     constructor(){
-        
     }
 
     /**
@@ -129,6 +200,10 @@ class PopupModel {
 
     getRecentCookieArray(){
         return this.recentCookieArray;
+    }
+
+    removeEntryFromRecents(index){
+        this.recentCookieArray.splice(index, 1);
     }
 
     /**
