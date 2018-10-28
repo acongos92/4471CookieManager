@@ -3,8 +3,14 @@
     height: 100px;
 }
 
-th, td {
-    padding: 6px;
+th {
+    padding: 1px;
+    text-align: left;
+    border: 1px solid black;
+}
+
+td {
+    padding: 1px;
     text-align: left;
     border: 1px solid black;
 }

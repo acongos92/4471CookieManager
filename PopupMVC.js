@@ -13,6 +13,8 @@ class PopupView {
         this.recentCookies = document.getElementById("recentCookieInfo");
         this.buttonPanel = document.getElementById("cookieBlockerPanel");
         this.popupController = popupController;
+        //defines the maximum string length which can be displayed in cookie table
+        this.maxStringLength = 11;
     }
 
     /**
@@ -35,9 +37,18 @@ class PopupView {
          let table = document.getElementById("recentCookieTable");
          let row = table.insertRow(table.rows.length);
          let cell1 = row.insertCell(0);
-         cell1.innerHTML = cookieName;
+         if (cookieName.length > this.maxStringLength){
+             cell1.innerHTML = cookieName.substring(0, this.maxStringLength) + " ...";
+         }else{
+            cell1.innerHTML = cookieName;
+         }
          let cell2 = row.insertCell(1);
-         cell2.innerHTML = cookieDomain;
+         if (cookieDomain.length > this.maxStringLength){
+             cell2.innerHTML = cookieDomain.substring(0, this.maxStringLength) + " ..."
+         }else {
+            cell2.innerHTML = cookieDomain;
+         }
+
      }
 
 }
