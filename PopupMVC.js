@@ -109,7 +109,7 @@ class PopupController {
      */
     deleteCookieClicked(rowNumber){
         let model = this.model.getRecentCookieArray();
-        let qualifiedDomain = "http://"  + model[rowNumber - 1].domain;
+        let qualifiedDomain = "https://"  + model[rowNumber - 1].domain;
         let cookieName = model[rowNumber - 1].name
         //remove cookie from browser storage
         let modelRef = this.model; 
@@ -134,7 +134,10 @@ class PopupController {
      * @param {} rowNumber 
      */
     blockDomainClicked(rowNumber){
-        alert("row " + rowNumber + " clicked");
+        let model = this.model.getRecentCookieArray();
+        this.addDomainToBlockedList(model[rowNumber - 1].domain);
+        this.model.removeEntryFromRecents(rowNumber - 1);
+        this.view.removeRecentCookieRowFromView(rowNumber);
     }
 
     removeCookieFromExtensionRecentStorage(name, domain){
@@ -150,6 +153,61 @@ class PopupController {
                 })
             }
         });
+    }
+
+    addDomainToBlockedList(domainName){
+        let controllerRef = this;
+        chrome.storage.local.get("BlockedDomains", function(result){
+            if (result.BlockedDomains && result.BlockedDomains.domains){
+                if (!result.BlockedDomains.domains.includes(domainName)){
+                    result.BlockedDomains.domains.push(domainName);
+                }
+                controllerRef.clearExistingCookiesFromBlockedDomains(result.BlockedDomains.domains);
+                chrome.storage.local.set({"BlockedDomains" : result.BlockedDomains}, function(){
+                    //dont care about the result of set for now 
+                });
+            }
+        });
+    }
+
+    clearExistingCookiesFromBlockedDomains(blockedDomains){
+        let cookies = this.model.getCookieArr();
+        for (let i = 0; i <cookies.length; i++){
+            if(blockedDomains.includes(cookies[i].domain)){
+                this.deleteBlockedCookie(cookies[i].name, cookies[i].domain);
+            }
+        }
+    }
+
+
+    //Below two functions are duplicated from BackgroundCookieMonitor
+    /**
+     * removes a cookie from storage
+     * @param {} cookieName 
+     * @param {*} cookieDomain 
+     */
+    deleteBlockedCookie(cookieName, cookieDomain){
+        let qualifiedDomain = "https://" + cookieDomain; 
+        let controllerRef = this;
+        let modelRef = this.model; 
+        chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
+            console.log(details);
+            controllerRef.incrementBlockedCookieCount();
+            modelRef.setupStoredCookieData(modelRef, controllerRef);
+        });
+    }
+
+    incrementBlockedCookieCount(){
+        chrome.storage.local.get("AutoBlockedCount", function(result){
+            console.log("blocked cookie count");
+            console.log(result);
+            if(result.AutoBlockedCount != null){
+                result.AutoBlockedCount++;
+                chrome.storage.local.set({"AutoBlockedCount" : result.AutoBlockedCount}, function(){
+                    //not interested in the result of this callback right now 
+                })
+            }
+        })
     }
 
 }

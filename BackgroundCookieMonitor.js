@@ -5,7 +5,6 @@
   * exceeds max minimum storage time
   * @param {*} cookie 
   */
-
 function addCookieToRecentStorage(result, cookie){
     let storedArray = result.RecentCookies.data;
     while(storedArray.length >= 6){
@@ -32,6 +31,12 @@ function createStorageEntryAndAddCookie(cookie){
     });
 }
 
+/**
+ * ensures recent storage exists, creates it if it does not 
+ * in both cases adds new cookie entry to recent storage 
+ * @param {*} result 
+ * @param {*} cookie 
+ */
 function checkStorageResult(result, cookie){
     //this storage entry existed
     if (result.RecentCookies){
@@ -41,6 +46,10 @@ function checkStorageResult(result, cookie){
     }
 }
 
+/**
+ * adds a new cookie to existing recent storage 
+ * @param {*} cookie 
+ */
 function addNewCookieToRecentStorage(cookie){
     chrome.storage.local.get("RecentCookies", function(result){
         console.log("Recent cookie store");
@@ -49,6 +58,10 @@ function addNewCookieToRecentStorage(cookie){
     });
 }
 
+/**
+ * 
+ * @param {*} cookie 
+ */
 function getRecentCookiesAndAddOrDelete(cookie){
     chrome.storage.local.get("BlockedDomains", function(result){
         console.log("Blocked cookie store");
@@ -62,12 +75,12 @@ function getRecentCookiesAndAddOrDelete(cookie){
 }
 
 function incrementBlockedCookieCount(){
-    chrome.storage.local.get("BlockedCookieCount", function(result){
+    chrome.storage.local.get("AutoBlockedCount", function(result){
         console.log("blocked cookie count");
         console.log(result);
-        if(result.BlockedCookieCount != null){
-            result.BlockedCookieCount++;
-            chrome.storage.local.set({"BlockedCookieCount" : result.BlockedCookieCount}, function(){
+        if(result.AutoBlockedCount != null){
+            result.AutoBlockedCount++;
+            chrome.storage.local.set({"AutoBlockedCount" : result.AutoBlockedCount}, function(){
                 //not interested in the result of this callback right now 
             })
         }
@@ -80,7 +93,7 @@ function incrementBlockedCookieCount(){
  * @param {*} cookieDomain 
  */
 function deleteBlockedCookie(cookieName, cookieDomain){
-    let qualifiedDomain = "http://" + cookieDomain; 
+    let qualifiedDomain = "https://" + cookieDomain; 
     chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
         incrementBlockedCookieCount();
     });
