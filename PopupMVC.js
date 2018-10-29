@@ -90,6 +90,9 @@ class PopupController {
         this.model.setupStoredCookieData(this.model, this);
     }
 
+    /**
+     * stored cookie data loading callback
+     */
     onStoredCookieDataReadyCallback(){
         this.view.writeCookieCount("cookie count: " + 
                                     this.model.getCookieArr().length);
@@ -97,10 +100,16 @@ class PopupController {
                                         this.model.getUniqueDomainArray().length);
     }
 
+    /**
+     * recent cookie added data loading callback
+     */
     onRecentCookieDataReadyCallback(){
         this.drawRecentCookieDataToTable();
     }
 
+    /**
+     * sets the recently added cookie number
+     */
     drawRecentCookieDataToTable(){
         let recents = this.model.getRecentCookieArray();
         this.view.writeRecentCookieCount("Recently Added Cookies: " + recents.length);
@@ -150,6 +159,12 @@ class PopupController {
         this.view.removeRecentCookieRowFromView(rowNumber);
     }
 
+    /**
+     * removes a single cookie from the extensions RecentCookie storage,
+     * updates storage to reflect this change
+     * @param {*} name 
+     * @param {*} domain 
+     */
     removeCookieFromExtensionRecentStorage(name, domain){
         chrome.storage.local.get("RecentCookies", function(result){
             if (result.RecentCookies && result.RecentCookies.data){
@@ -165,6 +180,11 @@ class PopupController {
         });
     }
 
+    /**
+     * adds a domain name to blocked domain list and calls functions to clear 
+     * cookies already in storage that are part of the newly blocked domain
+     * @param {*} domainName 
+     */
     addDomainToBlockedList(domainName){
         let controllerRef = this;
         chrome.storage.local.get("BlockedDomains", function(result){
@@ -181,6 +201,11 @@ class PopupController {
         this.clearBlockedCookieFromRecents(domainName);
     }
 
+    /**
+     * checks every stored cookie to see if it is from a newly blocked domain
+     * if so the cookie is removed from storage 
+     * @param {*} blockedDomains 
+     */
     clearExistingCookiesFromBlockedDomains(blockedDomains){
         let cookies = this.model.getCookieArr();
         let toBeDeleted = [];
@@ -195,6 +220,12 @@ class PopupController {
         }
     }
 
+    /**
+     * when a user selects block domain, it is possible that several cookies from
+     * that blocked domain exist in the recents list, this function clears those and
+     * ensures recent cookies is set and displayed correctly 
+     * @param {*} blockedDomainName 
+     */
     clearBlockedCookieFromRecents(blockedDomainName){
         let modelRef = this.model;
         let viewRef = this.view;
