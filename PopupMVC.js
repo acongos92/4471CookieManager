@@ -183,10 +183,15 @@ class PopupController {
 
     clearExistingCookiesFromBlockedDomains(blockedDomains){
         let cookies = this.model.getCookieArr();
+        let toBeDeleted = [];
         for (let i = 0; i <cookies.length; i++){
             if(blockedDomains.includes(cookies[i].domain)){
-                this.deleteBlockedCookie(cookies[i].name, cookies[i].domain);
+                toBeDeleted.push(cookies[i]);
+
             }
+        }
+        for (let i = 0; i <toBeDeleted.length; i++){
+            this.deleteBlockedCookie(toBeDeleted[i].name, toBeDeleted[i].domain);
         }
     }
 
@@ -196,11 +201,13 @@ class PopupController {
         let controllerRef = this;
         chrome.storage.local.get("RecentCookies", function(results){
             if (results.RecentCookies && results.RecentCookies.data){
+                let newData = [];
                 for (let i = 0; i < results.RecentCookies.data.length; i++){
-                    if (results.RecentCookies.data[i].domain == blockedDomainName){
-                        results.RecentCookies.data.splice(i, 1);
+                    if (results.RecentCookies.data[i].domain != blockedDomainName){
+                        newData.push(results.RecentCookies.data[i]);
                     }
                 }
+                results.RecentCookies.data = newData;
                 chrome.storage.local.set({"RecentCookies": results.RecentCookies}, function(){
                     viewRef.clearRecentCookieTable();
                     modelRef.setupRecentCookieData(modelRef, controllerRef);
