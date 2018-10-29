@@ -51,7 +51,6 @@
      */
 
     countUniqueDomains(){
-        console.log(this.cookies);
         for (let i = 0; i < this.cookies.length; i++){
             if(!this.uniqueDomains.includes(this.cookies[i].domain)){
                 this.uniqueDomains.push(this.cookies[i].domain)

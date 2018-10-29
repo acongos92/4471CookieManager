@@ -69,6 +69,12 @@ class PopupView {
         this.recentCookieTable.deleteRow(rowNumber);
      }
 
+     clearRecentCookieTable(){
+        while(this.recentCookieTable.rows.length > 1){
+            this.removeRecentCookieRowFromView(1);
+        }
+     }
+
 
 
 }
@@ -92,13 +98,18 @@ class PopupController {
     }
 
     onRecentCookieDataReadyCallback(){
+        this.drawRecentCookieDataToTable();
+    }
+
+    drawRecentCookieDataToTable(){
         let recents = this.model.getRecentCookieArray();
         this.view.writeRecentCookieCount("Recently Added Cookies: " + recents.length);
         for(let i = 0; i < recents.length; i++){
             this.view.addNewRecentCookieNameAndDomain(recents[i].name, recents[i].domain);
         }
-
     }
+
+
 
     /**
      * removes a single cookie from browser storage
@@ -115,7 +126,6 @@ class PopupController {
         let modelRef = this.model; 
         let controllerRef = this;
         chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
-            console.log(details);
             //update the model counters 
             modelRef.setupStoredCookieData(modelRef, controllerRef);
         });
@@ -126,6 +136,7 @@ class PopupController {
         this.view.writeRecentCookieCount("Recently Added Cookies: " + this.model.getRecentCookieArray().length);
         //update view
         this.view.removeRecentCookieRowFromView(rowNumber);
+        this.view.clearRecentCookieTable();
     }
 
     /**
@@ -168,6 +179,7 @@ class PopupController {
                 });
             }
         });
+        this.clearBlockedCookieFromRecents(domainName);
     }
 
     clearExistingCookiesFromBlockedDomains(blockedDomains){
@@ -177,6 +189,26 @@ class PopupController {
                 this.deleteBlockedCookie(cookies[i].name, cookies[i].domain);
             }
         }
+    }
+
+    clearBlockedCookieFromRecents(blockedDomainName){
+        let modelRef = this.model;
+        let viewRef = this.view;
+        let controllerRef = this;
+        chrome.storage.local.get("RecentCookies", function(results){
+            console.log(results);
+            if (results.RecentCookies && results.RecentCookies.data){
+                for (let i = 0; i < results.RecentCookies.data.length; i++){
+                    if (results.RecentCookies.data[i].domain == blockedDomainName){
+                        results.RecentCookies.data.splice(i, 1);
+                    }
+                }
+                chrome.storage.local.set({"RecentCookies": results.RecentCookies}, function(){
+                    viewRef.clearRecentCookieTable();
+                    modelRef.setupRecentCookieData(modelRef, controllerRef);
+                });
+            }
+        });
     }
 
 
@@ -191,7 +223,6 @@ class PopupController {
         let controllerRef = this;
         let modelRef = this.model; 
         chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
-            console.log(details);
             controllerRef.incrementBlockedCookieCount();
             modelRef.setupStoredCookieData(modelRef, controllerRef);
         });
@@ -199,8 +230,6 @@ class PopupController {
 
     incrementBlockedCookieCount(){
         chrome.storage.local.get("AutoBlockedCount", function(result){
-            console.log("blocked cookie count");
-            console.log(result);
             if(result.AutoBlockedCount != null){
                 result.AutoBlockedCount++;
                 chrome.storage.local.set({"AutoBlockedCount" : result.AutoBlockedCount}, function(){

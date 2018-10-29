@@ -11,8 +11,8 @@ function addCookieToRecentStorage(result, cookie){
         storedArray.shift();
     }
     storedArray.push(buildCookieStorageEntry(cookie));
-    result.data = storedArray;
-    chrome.storage.local.set({"RecentCookies" : result}, function(){
+    result.RecentCookies.data = storedArray;
+    chrome.storage.local.set({"RecentCookies" : result.RecentCookies}, function(){
         //dont care for now
     });
 }
@@ -52,8 +52,6 @@ function checkStorageResult(result, cookie){
  */
 function addNewCookieToRecentStorage(cookie){
     chrome.storage.local.get("RecentCookies", function(result){
-        console.log("Recent cookie store");
-        console.log(result);
         checkStorageResult(result, cookie)
     });
 }
@@ -64,8 +62,6 @@ function addNewCookieToRecentStorage(cookie){
  */
 function getRecentCookiesAndAddOrDelete(cookie){
     chrome.storage.local.get("BlockedDomains", function(result){
-        console.log("Blocked cookie store");
-        console.log(result);
         if (result.BlockedDomains && result.BlockedDomains.domains.includes(cookie.domain)){
             deleteBlockedCookie(cookie.name, cookie.domain);
         }else{
@@ -76,8 +72,6 @@ function getRecentCookiesAndAddOrDelete(cookie){
 
 function incrementBlockedCookieCount(){
     chrome.storage.local.get("AutoBlockedCount", function(result){
-        console.log("blocked cookie count");
-        console.log(result);
         if(result.AutoBlockedCount != null){
             result.AutoBlockedCount++;
             chrome.storage.local.set({"AutoBlockedCount" : result.AutoBlockedCount}, function(){
