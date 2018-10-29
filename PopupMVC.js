@@ -136,7 +136,6 @@ class PopupController {
         this.view.writeRecentCookieCount("Recently Added Cookies: " + this.model.getRecentCookieArray().length);
         //update view
         this.view.removeRecentCookieRowFromView(rowNumber);
-        this.view.clearRecentCookieTable();
     }
 
     /**
@@ -196,7 +195,6 @@ class PopupController {
         let viewRef = this.view;
         let controllerRef = this;
         chrome.storage.local.get("RecentCookies", function(results){
-            console.log(results);
             if (results.RecentCookies && results.RecentCookies.data){
                 for (let i = 0; i < results.RecentCookies.data.length; i++){
                     if (results.RecentCookies.data[i].domain == blockedDomainName){
