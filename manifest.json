@@ -23,5 +23,6 @@
         "128": "images/cookie.png"
       }
     },
+    "options_page" : "options.html",
     "manifest_version": 3
   }
