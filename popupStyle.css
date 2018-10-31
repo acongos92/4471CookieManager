@@ -1,4 +1,16 @@
 .countContent {
-    width: 200px;
+    width: 300px;
     height: 100px;
+}
+
+th {
+    padding: 1px;
+    text-align: left;
+    border: 1px solid black;
+}
+
+td {
+    padding: 1px;
+    text-align: left;
+    border: 1px solid black;
 }

@@ -5,7 +5,6 @@
  */
 
  class CookieDataManager {
-
     /**
      * takes a cookie object and sets up other common member variables 
      * @param {*} cookies a chrome Cookie object
@@ -15,15 +14,17 @@
         this.uniqueDomains = [];
         this.countUniqueDomains();
     }
-
     /**
      * publicy accesible methods 
      */
 
+    getCookieArr(){
+        return this.cookies;
+    }
+
     /**
      * returns total number of cookie objects 
      */
-
      getTotalCookieCount() {
          return this.cookies.length;
      }
@@ -32,7 +33,6 @@
       * returns the number of unique domains within this.cookies 
       */
     getUniqueDomainCounts(){
-        console.log(this.uniqueDomains);
         return this.uniqueDomains.length;
     }
 

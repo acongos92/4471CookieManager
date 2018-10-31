@@ -13,7 +13,10 @@
         "cookies"
     ],
     "background": {
-      "scripts": [ "background.js"],
+      "scripts": [ 
+        "StorageObjectModels.js",
+        "background.js",
+        "BackgroundCookieMonitor.js"],
       "persistent": true
     },
     "browser_action": {
