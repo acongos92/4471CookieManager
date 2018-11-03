@@ -14,9 +14,9 @@
     ],
     "background": {
       "scripts": [ 
-        "StorageObjectModels.js",
-        "background.js",
-        "BackgroundCookieMonitor.js"],
+        "js/StorageObjectModels.js",
+        "js/background.js",
+        "js/BackgroundCookieMonitor.js"],
       "persistent": true
     },
     "browser_action": {
