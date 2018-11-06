@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-        <link rel="stylesheet" type="text/css" href="options_style.css">
-    
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="options_style.css"> 
   </head>
   <body>
     <div id=blockedDomainSection>
+      <h1 id="blockedDOmainsHeading">Blocked Domains</h1>
+      <h2>Here you can view domains you've blocked through the extension and remove them from the blocked list</h2>
+      <table id="blockedDomainsTable">
+        <thead>
+          <th>Domain Name</th>
+          <th>Unblock Domain</th>
+        </thead>
+        <tbody id = "blockedDomainTableBody">
+  
+        </tbody>
+      </table>
+    
     </div>
-    
-    
-    
     <script src=BlockedDomainsMVC.js></script>
     
     
