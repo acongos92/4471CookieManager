@@ -94,10 +94,8 @@ class PopupController {
      * stored cookie data loading callback
      */
     onStoredCookieDataReadyCallback(){
-        this.view.writeCookieCount("cookie count: " + 
-                                    this.model.getCookieArr().length);
-        this.view.writeUniqueDomainCount("unique domains: " + 
-                                        this.model.getUniqueDomainArray().length);
+        this.view.writeCookieCount("blocked cookie count: " + 
+                                    this.model.getBlockedCount());
     }
 
     /**
@@ -305,9 +303,25 @@ class PopupModel {
         chrome.storage.local.get("RecentCookies", function(result){
             if (result.RecentCookies){
                 modelRef.setupRecentCookieFieldObject(result.RecentCookies);
+                
+            }
+
+        });
+        chrome.storage.local.get("AutoBlockedCount", function(result){
+            if(result.AutoBlockedCount != null){
+                modelRef.setBlockedCount(result.AutoBlockedCount);
                 controllerRef.onRecentCookieDataReadyCallback();
             }
+            
         });
+    }
+
+    setBlockedCount(count){
+        this.count = count;
+    }
+
+    getBlockedCount(){
+        return this.count;
     }
     
     /**
