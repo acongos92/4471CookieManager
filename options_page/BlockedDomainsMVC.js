@@ -28,7 +28,11 @@ class BlockedDomainsView {
      * sets view to "blank slate" removing everything in the blockedDomainSection div
      */
     hideBlockedDomainsView(){
-        this.parentSection.hidden = true;
+        this.parentSection.style.display = "none";
+    }
+
+    showBlockedDomainsView(){
+        this.parentSection.style.display = "block";
     }
 
     /**
@@ -105,7 +109,7 @@ class BlockedDomainsModel {
             if(result.BlockedDomains){
                 result.BlockedDomains.domains = modelRef.blockedDomainsArray;
                 chrome.storage.local.set({"BlockedDomains": result.BlockedDomains}, function(){
-                    //dont care
+                    
                 });
             }
         });
@@ -134,6 +138,20 @@ class BlockedDomainsController {
         this.model.removeElementFromModel(rowIndex -1);
         this.view.removeElementFromBlockedDomainsTable(rowIndex);
     }
-}
 
-let controller = new BlockedDomainsController();
+    /*
+     * super controller methods. I.E page has a single object 
+     * responsible for toggling sub page elements
+     */ 
+    hideSection(){
+        this.view.hideBlockedDomainsView();
+    }
+
+    displaySection(){
+        this.view.showBlockedDomainsView();
+    }
+
+    resetSection(){
+
+    }
+}
