@@ -99,6 +99,11 @@ function deleteBlockedCookie(cookieName, cookieDomain){
 chrome.cookies.onChanged.addListener(function(changeInfo){
     if(changeInfo.cause == "explicit"){
         //change this to check if the cookie still exists first
-        getRecentCookiesAndAddOrDelete(changeInfo.cookie)
+        let qualifiedDomain = "http://" + changeInfo.cookie.domain; 
+        chrome.cookies.get({"url" : qualifiedDomain, "name" : changeInfo.cookie.name}, function(result){
+            if(result != null){
+                getRecentCookiesAndAddOrDelete(changeInfo.cookie);
+            }
+        })
     }
 });
