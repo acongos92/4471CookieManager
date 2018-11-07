@@ -137,6 +137,8 @@ function stripInternetPrefixes(untrimmedDomain){
     let trimmedDomain = "fail"
     if (untrimmedDomain.length > 3 && untrimmedDomain.substring(0, 4) == "www."){
         trimmedDomain = untrimmedDomain.slice(4, untrimmedDomain.length);
+    }else if (untrimmedDomain.length > 4 && untrimmedDomain.substring(0, 5) == ".www."){
+        trimmedDomain = untrimmedDomain.slice(5, untrimmedDomain.length);
     }else if(untrimmedDomain.length > 0 && untrimmedDomain[0] == "."){
         trimmedDomain = untrimmedDomain.slice(1, untrimmedDomain.length);
     }else {
@@ -157,6 +159,7 @@ function updateWebsiteStalkerStats(url, cookie){
             let data = result.StalkerRank.PageData;
             if(data[url]){
                 data[url].foreignCookieCount++;
+                console.log(data[url].foreignDomains)
                 if (!data[url].foreignDomains.includes[cookie.domain]){
                     data[url].foreignDomains.push(cookie.domain);
                 }
