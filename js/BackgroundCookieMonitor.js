@@ -1,4 +1,9 @@
 //Expects access to scripts SotrageObjectModels.js and CookieDataManager.js
+/*
+ * STORAGE AND BLOCKING MANAGEMENT SECTION 
+ * ===================================================================================================================
+ */
+
  /**
   * adds a cookie to recent storage, does basic recent storage managemnet including ensuring 
   * no more than 6 cookies are present in recent storage, and that no recent storage entry 
@@ -93,6 +98,63 @@ function deleteBlockedCookie(cookieName, cookieDomain){
     });
 }
 
+/*
+ * ===================================================================================================================
+ */
+
+/*
+ * STALKER RANK MANAGEMENT SECTION 
+ *  ===================================================================================================================
+ */
+
+/**
+ * takes a url and removes all non domain information, with the exception of leaving a "www" prefix if one exists 
+ * returns the string representing the url with unrelated information removed 
+ * @param {*} url 
+ */
+function toUsefulString(url){
+	let i = 0;
+    let usefulArr = [];
+    let foundFirstState = false;
+	while (i < url.length){
+        if(foundFirstState){
+			if(url[i] != "/"){
+
+            	usefulArr.push(website[i]);
+            }else{
+				break;
+            }
+        }else if (url[i] == "/"){
+			foundFirstState = true;
+			i++;
+        }
+		i++;
+    }
+	return usefulArr.join("");
+}
+
+/**
+ * compares the url and cookie domains to determine if they 
+ * came from the same place, if they didnt we want to update 
+ * the URL's stalker rank to indicate additional third part cookie storage
+ * @param {} url 
+ * @param {*} cookie 
+ */
+function stripAndUpdateStalkerRank(url, cookie){
+
+}
+function updateStalkerRankIfPossible(cookie){
+    chrome.tabs.query({}, function(tabs){
+        if (tabs.length == 1){
+
+        }
+    })
+}
+
+/*
+ * ===================================================================================================================
+ */
+
 /**
  * listens for an "explicit" cookie update meaning one has been removed or set 
  */
@@ -105,6 +167,7 @@ chrome.cookies.onChanged.addListener(function(changeInfo){
         chrome.cookies.get({"url" : qualifiedDomain, "name" : changeInfo.cookie.name}, function(result){
             if(result != null){
                 getRecentCookiesAndAddOrDelete(changeInfo.cookie);
+                updateStalkerRankIfPossible(changeInfo.cookie);
             }
         })
     }

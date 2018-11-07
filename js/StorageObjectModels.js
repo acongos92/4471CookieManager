@@ -17,6 +17,21 @@
  * BlockedDomains {
  *                  domains[] //an array of BlockedDomainData
  *                }
+ * 
+ * StalkerRank {
+ *                  pageData[] //an array of PageData
+ * }
+ * 
+ * PageData {
+ *                  pageName           : string //the string representing a particular web page 
+ *                                              //this string by convention is stored without a "www." prefix
+ *                                              //for exampel if a cookie is stored by domain ".redit.com"
+ *                                              //the page data entry name will be "reddit.com"
+ *                                              //this is for the purpose of more conistent matching
+ *                  foreignCookieCount : int //an integer representing the number of non 
+ *                  foreignCookies[]   : RecentCookieData //an array of RecentCookieData representing the foreign cookies
+ * 
+ * }
  */
 
 function buildCookieStorageEntry(cookie){
@@ -42,4 +57,10 @@ function buildCookieStorageEntry(cookie){
          domains: []
      }
      return BlockedDomains;
+ }
+ function buildStalkerRank(){
+    let StalkerRank = {
+        PageData: []
+    }
+    return StalkerRank;
  }
