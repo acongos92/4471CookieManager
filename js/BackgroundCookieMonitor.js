@@ -144,6 +144,10 @@ function stripInternetPrefixes(untrimmedDomain){
     }
     return trimmedDomain;
 }
+
+function updateWebsiteStalkerStats(url, cookie){
+    
+}
 /**
  * compares the url and cookie domains to determine if they 
  * came from the same place, if they didnt we want to update 
@@ -155,12 +159,10 @@ function stripAndUpdateStalkerRank(url, cookie){
     let untrimmed = toUsefulString(url);
     let trimmedTabDomain = stripInternetPrefixes(untrimmed);
     let trimmedCookieDomain = stripInternetPrefixes(cookie.domain);
-    console.log(trimmedCookieDomain);
-    console.log(trimmedTabDomain);
     if (trimmedTabDomain.includes(trimmedCookieDomain)){
-        console.log("GOOD WEBSITE");
+        //site stored a cookie with a domain that matches the browsed domain 
     }else {
-        console.log("VVV BAD WEBSITE");
+        //site stored a cookie that does not match, add to stalker stats 
     }
 
 }
