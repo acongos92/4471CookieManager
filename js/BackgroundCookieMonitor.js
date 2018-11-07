@@ -145,8 +145,29 @@ function stripInternetPrefixes(untrimmedDomain){
     return trimmedDomain;
 }
 
+/**
+ * updates the analytics associated with a url to include that it stored data 
+ * associated with a third party cookie, assumes validity of url and cookie
+ * @param {*} url the url of the site being browsed 
+ * @param {*} cookie the cookie stored by url 
+ */
 function updateWebsiteStalkerStats(url, cookie){
-    
+    chrome.storage.local.get("StalkerRank", function(result){
+        if (result.StalkerRank){
+            let data = result.StalkerRank.PageData;
+            if(data[url]){
+                data[url].foreignCookieCount++;
+            }else{
+                data[url] = {
+                    foreignCookieCount: 1,
+                }
+            }
+            console.log(result);
+            chrome.storage.local.set({"StalkerRank" : result.StalkerRank}, function(){
+                //dont care
+            })
+        }
+    });
 }
 /**
  * compares the url and cookie domains to determine if they 
@@ -159,10 +180,9 @@ function stripAndUpdateStalkerRank(url, cookie){
     let untrimmed = toUsefulString(url);
     let trimmedTabDomain = stripInternetPrefixes(untrimmed);
     let trimmedCookieDomain = stripInternetPrefixes(cookie.domain);
-    if (trimmedTabDomain.includes(trimmedCookieDomain)){
-        //site stored a cookie with a domain that matches the browsed domain 
-    }else {
-        //site stored a cookie that does not match, add to stalker stats 
+    if (!(trimmedTabDomain.includes(trimmedCookieDomain))){
+        //cookie was not directly associated with the URL, add to stalker stats 
+        updateWebsiteStalkerStats(trimmedTabDomain, cookie);   
     }
 
 }
