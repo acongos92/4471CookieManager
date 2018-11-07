@@ -157,9 +157,13 @@ function updateWebsiteStalkerStats(url, cookie){
             let data = result.StalkerRank.PageData;
             if(data[url]){
                 data[url].foreignCookieCount++;
+                if (!data[url].foreignDomains.includes[cookie.domain]){
+                    data[url].foreignDomains.push(cookie.domain);
+                }
             }else{
                 data[url] = {
                     foreignCookieCount: 1,
+                    foreignDomains: [cookie.domain]
                 }
             }
             console.log(result);
