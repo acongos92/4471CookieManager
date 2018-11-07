@@ -120,7 +120,7 @@ function toUsefulString(url){
         if(foundFirstState){
 			if(url[i] != "/"){
 
-            	usefulArr.push(website[i]);
+            	usefulArr.push(url[i]);
             }else{
 				break;
             }
@@ -133,6 +133,17 @@ function toUsefulString(url){
 	return usefulArr.join("");
 }
 
+function stripInternetPrefixes(untrimmedDomain){
+    let trimmedDomain = "fail"
+    if (untrimmedDomain.length > 3 && untrimmedDomain.substring(0, 4) == "www."){
+        trimmedDomain = untrimmedDomain.slice(4, untrimmedDomain.length);
+    }else if(untrimmedDomain.length > 0 && untrimmedDomain[0] == "."){
+        trimmedDomain = untrimmedDomain.slice(1, untrimmedDomain.length);
+    }else {
+        trimmedDomain = untrimmedDomain;
+    }
+    return trimmedDomain;
+}
 /**
  * compares the url and cookie domains to determine if they 
  * came from the same place, if they didnt we want to update 
@@ -141,12 +152,22 @@ function toUsefulString(url){
  * @param {*} cookie 
  */
 function stripAndUpdateStalkerRank(url, cookie){
+    let untrimmed = toUsefulString(url);
+    let trimmedTabDomain = stripInternetPrefixes(untrimmed);
+    let trimmedCookieDomain = stripInternetPrefixes(cookie.domain);
+    console.log(trimmedCookieDomain);
+    console.log(trimmedTabDomain);
+    if (trimmedTabDomain.includes(trimmedCookieDomain)){
+        console.log("GOOD WEBSITE");
+    }else {
+        console.log("VVV BAD WEBSITE");
+    }
 
 }
 function updateStalkerRankIfPossible(cookie){
     chrome.tabs.query({}, function(tabs){
         if (tabs.length == 1){
-
+            stripAndUpdateStalkerRank(tabs[0].url, cookie);
         }
     })
 }
