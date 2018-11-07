@@ -12,6 +12,7 @@
     constructor(cookies){
         this.cookies = cookies; 
         this.uniqueDomains = [];
+        this.uniqueDomainWithCounts = {}
         this.countUniqueDomains();
     }
     /**
@@ -44,6 +45,10 @@
         return this.uniqueDomains;
     }
 
+    getUniqueDomainNameAndCounts(){
+        return this.uniqueDomainWithCounts;
+    }
+
 
 
     /**
@@ -51,10 +56,12 @@
      */
 
     countUniqueDomains(){
-        console.log(this.cookies);
         for (let i = 0; i < this.cookies.length; i++){
             if(!this.uniqueDomains.includes(this.cookies[i].domain)){
+                this.uniqueDomainWithCounts[this.cookies[i].domain] = 1;
                 this.uniqueDomains.push(this.cookies[i].domain)
+            }else{
+                this.uniqueDomainWithCounts[this.cookies[i].domain]++;
             }
         }
     }

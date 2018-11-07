@@ -85,9 +85,9 @@ class PopupView {
 class PopupController {
     constructor(){
         this.view = new PopupView(this);
-        this.model = new PopupModel();
+        this.model = new PopupModel(this);
         this.model.setupRecentCookieData(this.model, this);
-        this.model.setupStoredCookieData(this.model, this);
+        this.model.setupStoredCookieData();
     }
 
     /**
@@ -131,10 +131,9 @@ class PopupController {
         let cookieName = model[rowNumber - 1].name
         //remove cookie from browser storage
         let modelRef = this.model; 
-        let controllerRef = this;
         chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
             //update the model counters 
-            modelRef.setupStoredCookieData(modelRef, controllerRef);
+            modelRef.setupStoredCookieData();
         });
         //remove cookie from extension storage
         this.removeCookieFromExtensionRecentStorage(model[rowNumber -1].name, model[rowNumber -1].domain);
@@ -214,7 +213,7 @@ class PopupController {
             }
         }
         for (let i = 0; i <toBeDeleted.length; i++){
-            this.deleteBlockedCookie(toBeDeleted[i].name, toBeDeleted[i].domain);
+            this.deleteBlockedCookie(toBeDeleted[i].name, toBeDeleted[i].domain + toBeDeleted[i].path);
         }
     }
 
@@ -258,7 +257,7 @@ class PopupController {
         let modelRef = this.model; 
         chrome.cookies.remove({"url" : qualifiedDomain, "name": cookieName}, function(details){
             controllerRef.incrementBlockedCookieCount();
-            modelRef.setupStoredCookieData(modelRef, controllerRef);
+            modelRef.setupStoredCookieData();
         });
     }
 
@@ -281,14 +280,17 @@ class PopupController {
  */
 class PopupModel {
 
-    constructor(){
+    constructor(controller){
+        this.controller = controller
     }
 
     /**
      * loads cookie data from storage
      * @param {} callback 
      */
-    setupStoredCookieData(modelRef, controllerRef){
+    setupStoredCookieData(){
+        let controllerRef = this.controller;
+        let modelRef = this;
          chrome.cookies.getAll({}, function(cookies){
             modelRef.setupCookieDataManager(cookies);
             controllerRef.onStoredCookieDataReadyCallback();

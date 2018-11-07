@@ -127,7 +127,6 @@ class BlockedDomainsController {
 
     onDataSetCompleteCallback(){
         let domains = this.model.getBlockedDomainsArray();
-        console.log(domains);
         for (let i = 0; i < domains.length; i++){
             this.view.drawBlockedDomain(domains[i]);
         }

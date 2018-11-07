@@ -43,7 +43,6 @@ class SuperController {
       * @param {*} newController the new controller to call its startup/unhide method on
       */
      togleActiveTab(newActiveTab, newController){
-         console.log(newController);
          //tab management 
          this.currentActiveTab.className = "btn btn-dark";
          newActiveTab.className = "btn btn-dark active";

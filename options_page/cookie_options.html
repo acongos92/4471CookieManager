@@ -20,7 +20,7 @@
 
 
     <div id=blockedDomainSection>
-      <h1 id="blockedDOmainsHeading">Blocked Domains</h1>
+      <h1 id="blockedDomainsHeading">Blocked Domains</h1>
       <h2>Here you can view domains you've blocked through the extension and remove them from the blocked list</h2>
       <table id="blockedDomainsTable">
         <thead>
@@ -33,6 +33,18 @@
       </table>
     
     </div>
+    <div id=domainInfoSection>
+      <h1>Domain Information</h1>
+      <h3>This tab shows info about domains with cookies stored on your browser, and allows you to block a domain if you dont like the looks of it</h3>
+      <table id="domainInfoTable">
+        <thead>
+          <th>Domain Name</th>
+          <th>Cookies Stored</th>
+          <th>Block</th>
+        </thead>
+      </table>
+    </div>
+    <script src="../js/CookieDataManager.js"></script>
     <script src=BlockedDomainsMVC.js></script>
     <script src=DomainInfoMVC.js></script>
     <script src="SuperController.js"></script>
