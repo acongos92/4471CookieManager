@@ -13,13 +13,16 @@ class BlockedDomainsView {
      * public methods 
      */
 
+     /**
+      * clears all data except the table headers 
+      */
     resetSection(){
-
+        while (this.table.rows.length > 1){
+            this.table.deleteRow(1);
+        }
     }
     
-    drawInitialViewElements(){
 
-    }
 
     removeElementFromBlockedDomainsTable(index){
         this.table.deleteRow(index);
@@ -35,12 +38,6 @@ class BlockedDomainsView {
         this.parentSection.style.display = "block";
     }
 
-    /**
-     * removes all blocked cookie table elements
-     */
-    resetBlockedDomainsTable(){
-        this.blockedDomainsTableBody.innerHTML = "";
-    }
 
     drawBlockedDomain(domainName){
         let row = this.table.insertRow(this.table.rows.length);
@@ -120,7 +117,6 @@ class BlockedDomainsModel {
 class BlockedDomainsController {
     constructor(){
         this.view = new BlockedDomainsView(this);
-        this.view.drawInitialViewElements();
         this.model = new BlockedDomainsModel(this);
         this.model.setupData();
     }
@@ -151,6 +147,7 @@ class BlockedDomainsController {
     }
 
     resetSection(){
-
+        this.view.resetSection();
+        this.model.setupData();
     }
 }

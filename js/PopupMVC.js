@@ -8,14 +8,16 @@
  */
 class PopupView {
     constructor(popupController) {
+        this.popupController = popupController;
         this.cookieCount = document.getElementById("cookieCount");
         this.uniqueDomains = document.getElementById("uniqueCookieDomains");
         this.recentCookies = document.getElementById("recentCookieInfo");
         this.buttonPanel = document.getElementById("cookieBlockerPanel");
         this.recentCookieTable = document.getElementById("recentCookieTable");
-        this.popupController = popupController;
+        this.optionsButton = document.getElementById("optionsMenuButton");
         //defines the maximum string length which can be displayed in cookie table
         this.maxStringLength = 11;
+        this.setupOptionsMenuListener();
     }
 
     /**
@@ -73,6 +75,11 @@ class PopupView {
         while(this.recentCookieTable.rows.length > 1){
             this.removeRecentCookieRowFromView(1);
         }
+     }
+
+     setupOptionsMenuListener(){
+         let controller = this.popupController;
+         this.optionsButton.addEventListener("click", function(){controller.optionsButtonClicked()}, false);
      }
 
 
@@ -142,6 +149,10 @@ class PopupController {
         this.view.writeRecentCookieCount("Recently Added Cookies: " + this.model.getRecentCookieArray().length);
         //update view
         this.view.removeRecentCookieRowFromView(rowNumber);
+    }
+
+    optionsButtonClicked(){
+        chrome.runtime.openOptionsPage();
     }
 
     /**

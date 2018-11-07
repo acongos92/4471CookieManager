@@ -50,6 +50,7 @@ class SuperController {
          //controller management
          this.currentActiveController.hideSection();
          newController.displaySection();
+         newController.resetSection();
          this.currentActiveController = newController;
      }
 
