@@ -183,12 +183,14 @@ function updateWebsiteStalkerStats(url, cookie){
  * @param {*} cookie 
  */
 function stripAndUpdateStalkerRank(url, cookie){
-    let untrimmed = toUsefulString(url);
-    let trimmedTabDomain = stripInternetPrefixes(untrimmed);
-    let trimmedCookieDomain = stripInternetPrefixes(cookie.domain);
-    if (!(trimmedTabDomain.includes(trimmedCookieDomain))){
-        //cookie was not directly associated with the URL, add to stalker stats 
-        updateWebsiteStalkerStats(trimmedTabDomain, cookie);   
+    if (url != null){
+        let untrimmed = toUsefulString(url);
+        let trimmedTabDomain = stripInternetPrefixes(untrimmed);
+        let trimmedCookieDomain = stripInternetPrefixes(cookie.domain);
+        if (!(trimmedTabDomain.includes(trimmedCookieDomain))){
+            //cookie was not directly associated with the URL, add to stalker stats 
+            updateWebsiteStalkerStats(trimmedTabDomain, cookie);   
+        }
     }
 
 }
