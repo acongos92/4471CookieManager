@@ -119,7 +119,6 @@ function toUsefulString(url){
 	while (i < url.length){
         if(foundFirstState){
 			if(url[i] != "/"){
-
             	usefulArr.push(url[i]);
             }else{
 				break;
@@ -159,8 +158,8 @@ function updateWebsiteStalkerStats(url, cookie){
             let data = result.StalkerRank.PageData;
             if(data[url]){
                 data[url].foreignCookieCount++;
-                console.log(data[url].foreignDomains)
-                if (!data[url].foreignDomains.includes[cookie.domain]){
+                if (!data[url].foreignDomains.includes(cookie.domain)){
+                    console.log(data[url].foreignDomains.includes(cookie.domain));
                     data[url].foreignDomains.push(cookie.domain);
                 }
             }else{
