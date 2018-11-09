@@ -159,7 +159,6 @@ function updateWebsiteStalkerStats(url, cookie){
             if(data[url]){
                 data[url].foreignCookieCount++;
                 if (!data[url].foreignDomains.includes(cookie.domain)){
-                    console.log(data[url].foreignDomains.includes(cookie.domain));
                     data[url].foreignDomains.push(cookie.domain);
                 }
             }else{
@@ -196,8 +195,26 @@ function stripAndUpdateStalkerRank(url, cookie){
 }
 function updateStalkerRankIfPossible(cookie){
     chrome.tabs.query({}, function(tabs){
-        if (tabs.length == 1){
-            stripAndUpdateStalkerRank(tabs[0].url, cookie);
+        if (tabs.length == 1 ){
+            chrome.storage.local.get("RecentBrowsingHistory", function(result){
+                /*
+                 * sorry bout this insane statement, but its standard null checks, then checking if recent 
+                 * browsing history contains the stripped down url, if it does its likely we have a late 
+                 * cookie storage request, and we dont want to add this to the stalker ranking 
+                 * essentially electing that false negatives are better than false positives for this analytic
+                 */
+                
+                if(result != null && result.RecentBrowsingHistory != null && tabs[0].url != null){
+                    console.log(cookie.domain);
+                    let stripped = stripInternetPrefixes(cookie.domain);
+                    console.log(stripped);
+                    console.log(result);
+                    if(!(result.RecentBrowsingHistory.recents.includes(stripped))){
+                            stripAndUpdateStalkerRank(tabs[0].url, cookie);
+                        }
+                }
+
+            });
         }
     })
 }
@@ -220,6 +237,30 @@ chrome.cookies.onChanged.addListener(function(changeInfo){
                 getRecentCookiesAndAddOrDelete(changeInfo.cookie);
                 updateStalkerRankIfPossible(changeInfo.cookie);
             }
-        })
+        });
+    }
+});
+
+function attemptAddToRecentBrowsing(url){
+    chrome.storage.local.get("RecentBrowsingHistory", function(result){
+        if(result != null && result.RecentBrowsingHistory != null){
+            let data = result.RecentBrowsingHistory.recents;
+            if (data.length < 15){
+                data.push(url);
+            }else {
+                data.shift();
+                data.push(url);
+            }
+            result.RecentBrowsingHistory.recents = data;
+            chrome.storage.local.set({"RecentBrowsingHistory": result.RecentBrowsingHistory}, function(){
+                //callback dont care but we could probably start checking for exceptions
+            });
+        }
+    });
+}
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+    if(tab.url != null){
+        attemptAddToRecentBrowsing(stripInternetPrefixes(toUsefulString(tab.url)));
     }
 });

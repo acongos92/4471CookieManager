@@ -27,6 +27,10 @@
  *                  foreignCookies[]   : RecentCookieData //an array of RecentCookieData representing the foreign cookies
  * 
  * }
+ * 
+ * RecentBrowsingHistory{
+ *          recents[] : array of String //a string array containing at most 5 recently visited domains 
+ * }
  */
 
 function buildCookieStorageEntry(cookie){
@@ -58,4 +62,10 @@ function buildCookieStorageEntry(cookie){
         PageData: {}
     }
     return StalkerRank;
+ }
+ function buildRecentBrowsingHistory(){
+     let RecentBrowsingHistory = {
+         recents: []
+     }
+     return RecentBrowsingHistory;
  }

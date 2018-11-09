@@ -8,6 +8,7 @@ function initialStorageSetup(){
   let RecentCookies = buildRecentCookies();
   let BlockedDomains = buildBlockedDomains();
   let StalkerRank = buildStalkerRank();
+  let RecentBrowsingHistory = buildRecentBrowsingHistory();
   chrome.storage.local.set({"RecentCookies" : RecentCookies}, function(){
     //callback once the async storage call is complete 
   });
@@ -23,6 +24,10 @@ function initialStorageSetup(){
   chrome.storage.local.set({"StalkerRank" : StalkerRank}, function(){
     //callback for third storage entry, still dont care
   });
+
+  chrome.storage.local.set({"RecentBrowsingHistory" : RecentBrowsingHistory}, function(){
+    //callback dont care
+  })
 }
 
 chrome.runtime.onInstalled.addListener(function() {
