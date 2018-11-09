@@ -17,3 +17,7 @@ tr:hover {background-color:#f5f5f5;}
 #domainInfoSection{
     display: none;
 }
+
+#stalkerInfoSection {
+    display: none;
+}

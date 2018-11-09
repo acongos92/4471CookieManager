@@ -14,6 +14,12 @@
           <li class ="nav-item">
             <button id ="navbarDomainInfo" type ="button" class="btn btn-dark">Domain Info</button>
           </li>
+          <li class ="nav-item">
+            <button id ="navbarStalkerInfo" type ="button" class="btn btn-dark">Cookie Analytics</button>
+          </li>
+          <li class ="nav-item">
+              <button id ="aboutOption" type ="button" class="btn btn-dark">About</button>
+            </li>
         </ul>
       </div>
     </nav>
@@ -33,7 +39,7 @@
       </table>
     
     </div>
-    <div id=domainInfoSection>
+    <div id="domainInfoSection">
       <h1>Domain Information</h1>
       <h3>This tab shows info about domains with cookies stored on your browser, and allows you to block a domain if you dont like the looks of it</h3>
       <table id="domainInfoTable">
@@ -44,7 +50,16 @@
         </thead>
       </table>
     </div>
+    <div id ="stalkerInfoSection">
+      <h1>Page Analytic and Stalker Ranking</h1>
+      <h3>
+        This shows collected data about how domains store third party<br>
+        tracking cookies, to learn more about how this is done and how<br>
+        you can contribute, click the about tab
+      </h3>
+    </div>
     <script src="../js/CookieDataManager.js"></script>
+    <script src="StalkerDataDisplayMVC.js"></script>
     <script src=BlockedDomainsMVC.js></script>
     <script src=DomainInfoMVC.js></script>
     <script src="SuperController.js"></script>

@@ -9,6 +9,7 @@ class SuperController {
     constructor(){
         this.blockedDomainsController = new BlockedDomainsController();
         this.domainInfoController = new DomainInfoController();
+        this.stalkerInfoController = new StalkerDataDisplayController();
         this.setupOptionsTabs()
     }
 
@@ -35,6 +36,11 @@ class SuperController {
          this.domainInfoNavOption = document.getElementById("navbarDomainInfo");
          let domainControllerRef = this.domainInfoController;
          this.domainInfoNavOption.addEventListener("click", function(){thisRef.tabToggleListener(this, domainControllerRef)}, false);
+
+         //register stalker info section 
+         this.stalkerInfoNavOption = document.getElementById("navbarStalkerInfo");
+         let stalkerControllerRef = this.stalkerInfoController;
+         this.stalkerInfoNavOption.addEventListener("click", function(){thisRef.tabToggleListener(this, stalkerControllerRef)}, false);
      }
 
      /**

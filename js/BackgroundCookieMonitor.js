@@ -205,10 +205,7 @@ function updateStalkerRankIfPossible(cookie){
                  */
                 
                 if(result != null && result.RecentBrowsingHistory != null && tabs[0].url != null){
-                    console.log(cookie.domain);
                     let stripped = stripInternetPrefixes(cookie.domain);
-                    console.log(stripped);
-                    console.log(result);
                     if(!(result.RecentBrowsingHistory.recents.includes(stripped))){
                             stripAndUpdateStalkerRank(tabs[0].url, cookie);
                         }
