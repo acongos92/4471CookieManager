@@ -55,7 +55,7 @@ class DomainInfoView{
     constructor(domainInfoController){
         this.controller = domainInfoController;
         this.parentSection = document.getElementById("domainInfoSection");
-        this.table = document.getElementById("domainInfoTable");
+        this.table = document.getElementById("domainInfoTable").getElementsByTagName("tbody")[0];
     }
 
     appendTableRow(domainName, domainCount){

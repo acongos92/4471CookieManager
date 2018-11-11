@@ -28,13 +28,12 @@
     <div id=blockedDomainSection>
       <h1 id="blockedDomainsHeading">Blocked Domains</h1>
       <h2>Here you can view domains you've blocked through the extension and remove them from the blocked list</h2>
-      <table id="blockedDomainsTable">
-        <thead>
+      <table class = "table" id="blockedDomainsTable">
+        <thead class="thead-dark">
           <th>Domain Name</th>
           <th>Unblock Domain</th>
         </thead>
         <tbody id = "blockedDomainTableBody">
-  
         </tbody>
       </table>
     
@@ -42,26 +41,35 @@
     <div id="domainInfoSection">
       <h1>Domain Information</h1>
       <h3>This tab shows info about domains with cookies stored on your browser, and allows you to block a domain if you dont like the looks of it</h3>
-      <table id="domainInfoTable">
-        <thead>
+      <table class = "table" id="domainInfoTable">
+        <thead class="thead-dark">
           <th>Domain Name</th>
           <th>Cookies Stored</th>
           <th>Block</th>
         </thead>
+        <tbody>
+        </tbody>
       </table>
     </div>
     <div id ="stalkerInfoSection">
       <h1>Page Analytic and Stalker Ranking</h1>
       <h3>
-        This shows collected data about how domains store third party<br>
-        tracking cookies, to learn more about how this is done and how<br>
-        you can contribute, click the about tab
+        This shows collected data about how domains store third party tracking cookies, click any domain to see more information<br> 
+        to learn more about how this is done and how you can contribute, click the about tab.
       </h3>
-    </div>
+      <table class = "table" id="stalkerTable">
+        <thead class="thead-dark">
+          <th>Domain Name</th>
+          <th># Third Party Cookies Stored</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     <script src="../js/CookieDataManager.js"></script>
     <script src="StalkerDataDisplayMVC.js"></script>
     <script src=BlockedDomainsMVC.js></script>
     <script src=DomainInfoMVC.js></script>
     <script src="SuperController.js"></script>
   </body>
+  
 </html>

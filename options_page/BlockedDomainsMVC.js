@@ -4,9 +4,9 @@
 class BlockedDomainsView {
     constructor(controller){
         this.controller = controller;
-        this.table = document.getElementById("blockedDomainsTable")
+        this.table = document.getElementById("blockedDomainsTable").getElementsByTagName("tbody")[0];
         this.parentSection = document.getElementById("blockedDomainSection");
-        this.blockedDomainsTableBody = document.getElementById("blockedDomainTableBody");
+
     }
     
     /*
