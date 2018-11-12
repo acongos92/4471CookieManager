@@ -97,7 +97,7 @@ class DomainInfoController{
      * public methods 
      */ 
     blockDomainClicked(rowIndex){
-        this.view.removeTableRow(rowIndex);
+        this.view.removeTableRow(rowIndex - 1);
         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
         this.addDomainToBlockedAndPurge(domainName);
     }

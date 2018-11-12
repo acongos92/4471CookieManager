@@ -131,7 +131,7 @@ class BlockedDomainsController {
     
     unblockDomainButtonClicked(rowIndex){
         this.model.removeElementFromModel(rowIndex -1);
-        this.view.removeElementFromBlockedDomainsTable(rowIndex);
+        this.view.removeElementFromBlockedDomainsTable(rowIndex - 1);
     }
 
     /*
