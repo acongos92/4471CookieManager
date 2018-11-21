@@ -16,11 +16,8 @@ class DetailsInfoModel{
     }
 
     removeCookieFromModel(rowIndex){
-//         let name = this.cookies[rowIndex].name;
-//         let domain = this.cookies[rowIndex].domain;
         let cookie = this.cookies[rowIndex];
         this.cookies.splice(rowIndex, 1);
-//         delete this.domainsWithCounts[name];
         return cookie;
     }
 
@@ -147,17 +144,6 @@ class DetailsInfoController{
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.childNodes[0].value;
         
-//         let text = document.createTextNode(cookieValue);
-//         valueNode.replaceChild(text, valueNode.childNodes[0]);
-        
-//         let btn = this.createEditButton();
-        
-//         let controllerRef = this;
-//         btn.addEventListener("click", function(event){
-//             controllerRef.editCookieClicked(event.target)
-//         }, false);
-//         clickedBtn.parentElement.replaceChild(btn, clickedBtn);
-        
         let controllerRef = this;
         
         let callback = function(result){
@@ -186,71 +172,11 @@ class DetailsInfoController{
      * model storage retrieval callbacks
      */
     onDataReadyCallback(){
-//         let domainsWithCounts = this.model.getDomainsWithCounts();
-//         let domainsArray = this.model.getDomainsArray();
         let cookies = this.model.getCookiesArray();
         let thisRef = this;
         cookies.forEach(function(cookie){
             thisRef.view.appendTableRow(cookie);
         });
-//         for(let i = 0; i < cookies.length; i++){
-//             this.view.appendTableRow(domainsArray[i], domainsWithCounts[domainsArray[i]]);
-//         }
-    }
-
-
-    /*
-     * New Domain blocking implementation 
-     */
-    addDomainToBlockedAndPurge(domainName){
-        chrome.storage.local.get("BlockedDomains", function(result){
-            if(result.BlockedDomains && result.BlockedDomains.domains){
-                if (!result.BlockedDomains.domains.includes(domainName)){
-                    result.BlockedDomains.domains.push(domainName);
-                }
-                chrome.storage.local.set({"BlockedDomains" : result.BlockedDomains}, function(){
-                    //dont care about the result
-                });
-            }
-        });
-        let controllerRef = this;
-        chrome.cookies.getAll({}, function(cookies){
-            if (cookies != null){
-                let newlyBlockedCookies = 0;
-                for(let i = 0; i< cookies.length; i++){
-                    if(cookies[i].domain == domainName){
-                        newlyBlockedCookies++;
-                        controllerRef.deleteCookieFromStorage(cookies[i].name, cookies[i].domain+ cookies[i].path);
-                    }
-                }
-                controllerRef.updateAutoBlocked(newlyBlockedCookies);
-            }
-        });
-        chrome.storage.local.get("RecentCookies", function(result){
-            if(result.RecentCookies && result.RecentCookies.data){
-                let newData = [];
-                for (let i = 0; i < result.RecentCookies.data.length; i++){
-                    if (result.RecentCookies.data[i].domain != domainName){
-                        newData.push(result.RecentCookies.data[i]);
-                    }
-                }
-                result.RecentCookies.data = newData;
-                chrome.storage.local.set({"RecentCookies": result.RecentCookies}, function(){
-
-                });
-            }
-        });
-    }
-
-    updateAutoBlocked(number){
-        chrome.storage.local.get("AutoBlockedCount", function(result){
-            if(result.AutoBlockedCount != null){
-                result.AutoBlockedCount += number;
-                chrome.storage.local.set({"AutoBlockedCount" : result.AutoBlockedCount}, function(){
-                    //not interested in the result of this callback right now 
-                })
-            }
-        })
     }
 
     setCookie(cookieName, cookieValue, cookieDomain, callback){
