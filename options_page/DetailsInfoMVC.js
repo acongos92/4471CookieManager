@@ -1,6 +1,6 @@
 class DetailsInfoModel{
-    constructor(domainInfoController){
-        this.controller = domainInfoController;   
+    constructor(detailsInfoController){
+        this.controller = detailsInfoController;   
     }
 
     /*
@@ -51,11 +51,11 @@ class DetailsInfoModel{
 
 }
 
-class DomainInfoView{
-    constructor(domainInfoController){
-        this.controller = domainInfoController;
-        this.parentSection = document.getElementById("domainInfoSection");
-        this.table = document.getElementById("domainInfoTable").getElementsByTagName("tbody")[0];
+class DetailsInfoView{
+    constructor(detailsInfoController){
+        this.controller = detailsInfoController;
+        this.parentSection = document.getElementById("detailsInfoSection");
+        this.table = document.getElementById("detailsInfoTable").getElementsByTagName("tbody")[0];
     }
 
     appendTableRow(domainName, domainCount){
@@ -88,10 +88,10 @@ class DomainInfoView{
     }
 }
 
-class DomainInfoController{
+class DetailsInfoController{
     constructor(){
-        this.view = new DomainInfoView(this);
-        this.model = new DomainInfoModel(this);
+        this.view = new DetailsInfoView(this);
+        this.model = new DetailsInfoModel(this);
         this.initSection();
     }
 
