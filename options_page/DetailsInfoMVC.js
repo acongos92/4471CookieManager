@@ -82,7 +82,9 @@ class DetailsInfoView{
         btn.innerHTML = "edit";
         btn.className = "btn btn-info";
         cell.appendChild(btn);
-        btn.addEventListener("click", function(){controllerRef.editCookieClicked(row.rowIndex)}, false);
+        btn.addEventListener("click", function(event){
+            controllerRef.editCookieClicked(event.target)
+        }, false);
   
     }
 
@@ -116,10 +118,11 @@ class DetailsInfoController{
 //         this.addDomainToBlockedAndPurge(cookie);
     }
     
-    editCookieClicked(rowIndex){
+    editCookieClicked(clickedBtn){
 //         this.view.removeTableRow(rowIndex - 1);
 //         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
 //         this.addDomainToBlockedAndPurge(domainName);
+        clickedBtn
     }
     
 //     detailsDomainClicked(rowIndex){
