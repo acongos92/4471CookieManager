@@ -126,10 +126,48 @@ class DetailsInfoController{
         let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.innerHTML;
+        
+        
+        let input = document.createElement("INPUT");
+        input.className = "from-control";
+        input.type = "text";
+        input.value = cookieValue;
+        input.name = domainNode.innerHTML + ";" + nameNode.innerHTML;
+        
+        valueNode.replaceChild(input, valueNode.childNodes[0]);
+//         valueNode.innerHTML = `
+//             <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
+// `;
+        
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = "save";
+        btn.className = "btn btn-success";
+        
+        let controllerRef = this;
+        btn.addEventListener("click", function(event){
+            controllerRef.updateCookieClicked(event.target)
+        }, false);
+        clickedBtn.parentElement.replaceChild(btn, clickedBtn);
+    }
+    
+    updateCookieClicked(clickedBtn){
+//         this.view.removeTableRow(rowIndex - 1);
+//         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+//         this.addDomainToBlockedAndPurge(domainName);
+        let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
+        let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
+        let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
+        let cookieValue = valueNode.innerHTML;
         valueNode.innerHTML = `
             <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
 `;
+        clickedBtn.innerHTML = "save";
+        clickedBtn.className = "btn btn-success";
         
+        let controllerRef = this;
+        btn.addEventListener("click", function(event){
+            controllerRef.editCookieClicked(event.target)
+        }, false);
     }
     
 //     detailsDomainClicked(rowIndex){
