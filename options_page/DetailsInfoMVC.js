@@ -11,15 +11,11 @@ class DetailsInfoModel{
         this.setupCookieManager();
     }
 
-    getDomainsArray(){
-        return this.domains;
+    getCookiesArray(){
+        return this.cookies;
     }
 
-    getDomainsWithCounts(){
-        return this.domainsWithCounts;
-    }
-
-    removeDomainFromModel(rowIndex){
+    removeCookieFromModel(rowIndex){
         let name = this.domains[rowIndex];
         this.domains.splice(rowIndex, 1);
         delete this.domainsWithCounts[name];
@@ -43,9 +39,8 @@ class DetailsInfoModel{
      * @param {} cookies cookies stored on browser to be added to manager
      */
     getDataFromCookieManager(cookies){
-        this.cookieManager = new CookieDataManager(cookies);
-        this.domains = this.cookieManager.getUniqueDomainNameArray();
-        this.domainsWithCounts = this.cookieManager.getUniqueDomainNameAndCounts();
+//         this.cookieManager = new CookieDataManager(cookies);
+        this.cookies = cookies;
         this.controller.onDataReadyCallback();
     }
 
@@ -58,20 +53,32 @@ class DetailsInfoView{
         this.table = document.getElementById("detailsInfoTable").getElementsByTagName("tbody")[0];
     }
 
-    appendTableRow(domainName, domainCount){
+    appendTableRow(cookie){
         let row = this.table.insertRow(this.table.rows.length);
-        let cell1 = row.insertCell(0);
-        cell1.innerHTML = domainName;
-        let cell2 = row.insertCell(1);
-        cell2.innerHTML = domainCount;
+        let cell = row.insertCell(0);
+        cell.innerHTML = cookie.domain;
         
-        let cell3 = row.insertCell(2);
-        let btn = document.createElement("BUTTON");
-        btn.innerHTML = "block";
-        btn.className = "btn btn-success";
-        cell3.appendChild(btn);
+        cell = row.insertCell(1);
+        cell.innerHTML = cookie.name;
+        
+        cell = row.insertCell(2);
+        cell.innerHTML = cookie.value;
+        
+        cell = row.insertCell(3);
+        
         let controllerRef = this.controller;
-        btn.addEventListener("click", function(){controllerRef.blockDomainClicked(row.rowIndex)}, false);
+        
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = "delete";
+        btn.className = "btn btn-danger";
+        cell.appendChild(btn);
+        btn.addEventListener("click", function(){controllerRef.deleteCookieClicked(row.rowIndex)}, false);
+        
+        btn = document.createElement("BUTTON");
+        btn.innerHTML = "edit";
+        btn.className = "btn btn-info";
+        cell.appendChild(btn);
+        btn.addEventListener("click", function(){controllerRef.editCookieClicked(row.rowIndex)}, false);
   
     }
 
@@ -98,27 +105,36 @@ class DetailsInfoController{
     /*
      * public methods 
      */ 
-    blockDomainClicked(rowIndex){
+    deleteCookieClicked(rowIndex){
+        this.view.removeTableRow(rowIndex - 1);
+        let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+        this.addDomainToBlockedAndPurge(domainName);
+    }
+    editCookieClicked(rowIndex){
         this.view.removeTableRow(rowIndex - 1);
         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
         this.addDomainToBlockedAndPurge(domainName);
     }
     
-    detailsDomainClicked(rowIndex){
-        this.view.removeTableRow(rowIndex - 1);
-        let domainName = this.model.removeDomainFromModel(rowIndex - 1);
-        this.addDomainToBlockedAndPurge(domainName);
-    }
+//     detailsDomainClicked(rowIndex){
+//         this.view.removeTableRow(rowIndex - 1);
+//         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+//         this.addDomainToBlockedAndPurge(domainName);
+//     }
 
     /*
      * model storage retrieval callbacks
      */
     onDataReadyCallback(){
-        let domainsWithCounts = this.model.getDomainsWithCounts();
-        let domainsArray = this.model.getDomainsArray();
-        for(let i = 0; i < domainsArray.length; i++){
-            this.view.appendTableRow(domainsArray[i], domainsWithCounts[domainsArray[i]]);
-        }
+//         let domainsWithCounts = this.model.getDomainsWithCounts();
+//         let domainsArray = this.model.getDomainsArray();
+        let cookies = this.model.getCookiesArray();
+        cookies.forEach(function(cookie, index){
+            this.view.appendTableRow(cookie);
+        });
+//         for(let i = 0; i < cookies.length; i++){
+//             this.view.appendTableRow(domainsArray[i], domainsWithCounts[domainsArray[i]]);
+//         }
     }
 
 
