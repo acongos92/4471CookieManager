@@ -115,10 +115,11 @@ class DetailsInfoController{
         this.deleteCookieFromStorage(cookie.name, cookie.domain);
 //         this.addDomainToBlockedAndPurge(cookie);
     }
+    
     editCookieClicked(rowIndex){
-        this.view.removeTableRow(rowIndex - 1);
-        let domainName = this.model.removeDomainFromModel(rowIndex - 1);
-        this.addDomainToBlockedAndPurge(domainName);
+//         this.view.removeTableRow(rowIndex - 1);
+//         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+//         this.addDomainToBlockedAndPurge(domainName);
     }
     
 //     detailsDomainClicked(rowIndex){
