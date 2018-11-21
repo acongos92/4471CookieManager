@@ -99,6 +99,7 @@ class DetailsInfoController{
     constructor(){
         this.view = new DetailsInfoView(this);
         this.model = new DetailsInfoModel(this);
+        alert("yeehah");
         this.initSection();
     }
 
@@ -129,7 +130,6 @@ class DetailsInfoController{
 //         let domainsWithCounts = this.model.getDomainsWithCounts();
 //         let domainsArray = this.model.getDomainsArray();
         let cookies = this.model.getCookiesArray();
-        alert("yeehah");
         cookies.forEach(function(cookie){
             this.view.appendTableRow(cookie);
         });
