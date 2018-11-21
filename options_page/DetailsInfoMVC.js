@@ -158,7 +158,7 @@ class DetailsInfoController{
         
         let controllerRef = this;
         btn.addEventListener("click", function(event){
-            controllerRef.updateCookieClicked(event.target)
+            controllerRef.editCookieClicked(event.target)
         }, false);
         clickedBtn.parentElement.replaceChild(btn, clickedBtn);
         
