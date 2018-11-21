@@ -64,6 +64,7 @@ class DomainInfoView{
         cell1.innerHTML = domainName;
         let cell2 = row.insertCell(1);
         cell2.innerHTML = domainCount;
+        
         let cell3 = row.insertCell(2);
         let btn = document.createElement("BUTTON");
         btn.innerHTML = "block";
@@ -71,6 +72,12 @@ class DomainInfoView{
         cell3.appendChild(btn);
         let controllerRef = this.controller;
         btn.addEventListener("click", function(){controllerRef.blockDomainClicked(row.rowIndex)}, false);
+        
+        let btn2 = document.createElement("BUTTON");
+        btn2.innerHTML = "details";
+        btn2.className = "btn btn-info";
+        cell3.appendChild(btn2);
+        btn2.addEventListener("click", function(){controllerRef.detailsDomainClicked(row.rowIndex)}, false);
     }
 
     hideSection(){
@@ -97,6 +104,12 @@ class DomainInfoController{
      * public methods 
      */ 
     blockDomainClicked(rowIndex){
+        this.view.removeTableRow(rowIndex - 1);
+        let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+        this.addDomainToBlockedAndPurge(domainName);
+    }
+    
+    detailsDomainClicked(rowIndex){
         this.view.removeTableRow(rowIndex - 1);
         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
         this.addDomainToBlockedAndPurge(domainName);
