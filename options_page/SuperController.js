@@ -9,8 +9,8 @@ class SuperController {
     constructor(){
         this.blockedDomainsController = new BlockedDomainsController();
         this.domainInfoController = new DomainInfoController();
-        this.stalkerInfoController = new StalkerDataDisplayController();
         this.detailsInfoController = new DetailsInfoController();
+        this.stalkerInfoController = new StalkerDataDisplayController();
         this.setupOptionsTabs()
     }
 
