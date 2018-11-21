@@ -122,7 +122,14 @@ class DetailsInfoController{
 //         this.view.removeTableRow(rowIndex - 1);
 //         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
 //         this.addDomainToBlockedAndPurge(domainName);
-        clickedBtn
+        let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
+        let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
+        let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
+        let cookieValue = valueNode.innerHTML;
+        valueNode.innerHTML = `
+            <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
+`;
+        
     }
     
 //     detailsDomainClicked(rowIndex){
