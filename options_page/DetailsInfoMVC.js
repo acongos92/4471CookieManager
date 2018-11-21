@@ -153,14 +153,15 @@ class DetailsInfoController{
 //         }, false);
 //         clickedBtn.parentElement.replaceChild(btn, clickedBtn);
         
+        let controllerRef = this;
+        
         let callback = function(result){
  
             let text = document.createTextNode(cookieValue);
             valueNode.replaceChild(text, valueNode.childNodes[0]);
 
-            let btn = this.createEditButton();
+            let btn = controllerRef.createEditButton();
 
-            let controllerRef = this;
             btn.addEventListener("click", function(event){
                 controllerRef.editCookieClicked(event.target)
             }, false);
