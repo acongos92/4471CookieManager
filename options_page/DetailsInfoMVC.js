@@ -123,7 +123,12 @@ class DetailsInfoController{
         input.type = "text";
         input.value = cookieValue;
         
-        valueNode.replaceChild(input, valueNode.childNodes[0]);
+        if(!valueNode.childNodes[0]){
+            valueNode.replaceChild(input, alueNode.childNodes[0]);
+        }
+        else{
+            valueNode.appendChild(input);
+        }
         
         let btn = document.createElement("BUTTON");
         btn.innerHTML = "save";
