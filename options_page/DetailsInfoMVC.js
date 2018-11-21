@@ -129,7 +129,7 @@ class DetailsInfoController{
 //         let domainsWithCounts = this.model.getDomainsWithCounts();
 //         let domainsArray = this.model.getDomainsArray();
         let cookies = this.model.getCookiesArray();
-        alert("yeehah);
+        alert("yeehah");
         cookies.forEach(function(cookie){
             this.view.appendTableRow(cookie);
         });
