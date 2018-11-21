@@ -16,10 +16,12 @@ class DetailsInfoModel{
     }
 
     removeCookieFromModel(rowIndex){
-        let name = this.domains[rowIndex];
-        this.domains.splice(rowIndex, 1);
-        delete this.domainsWithCounts[name];
-        return name;
+//         let name = this.cookies[rowIndex].name;
+//         let domain = this.cookies[rowIndex].domain;
+        let cookie = this.cookies[rowIndex];
+        this.cookies.splice(rowIndex, 1);
+//         delete this.domainsWithCounts[name];
+        return cookie;
     }
 
      /*
@@ -109,8 +111,9 @@ class DetailsInfoController{
      */ 
     deleteCookieClicked(rowIndex){
         this.view.removeTableRow(rowIndex - 1);
-        let domainName = this.model.removeDomainFromModel(rowIndex - 1);
-        this.addDomainToBlockedAndPurge(domainName);
+        let cookie = this.model.removeCookieFromModel(rowIndex - 1);
+        this.deleteCookieFromStorage(cookie.name, cookie.domain);
+//         this.addDomainToBlockedAndPurge(cookie);
     }
     editCookieClicked(rowIndex){
         this.view.removeTableRow(rowIndex - 1);
