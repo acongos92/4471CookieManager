@@ -60,11 +60,11 @@ class DetailsInfoView{
         
         cell = row.insertCell(1);
         cell.innerHTML = cookie.name;
-        cell.className = "d-inline-block text-truncate";
+        cell.className = "text-truncate";
         
         cell = row.insertCell(2);
         cell.innerHTML = cookie.value;
-        cell.className = "d-inline-block text-truncate";
+        cell.className = "text-truncate";
         
         cell = row.insertCell(3);
         
@@ -101,7 +101,6 @@ class DetailsInfoController{
     constructor(){
         this.view = new DetailsInfoView(this);
         this.model = new DetailsInfoModel(this);
-        alert("yeehah");
         this.initSection();
     }
 
