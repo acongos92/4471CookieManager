@@ -78,14 +78,18 @@ class DetailsInfoView{
         cell.appendChild(btn);
         btn.addEventListener("click", function(){controllerRef.deleteCookieClicked(row.rowIndex)}, false);
         
-        btn = document.createElement("BUTTON");
-        btn.innerHTML = "edit";
-        btn.className = "btn btn-info";
+//         btn = document.createElement("BUTTON");
+//         btn.innerHTML = "edit";
+//         btn.className = "btn btn-info";
+//         cell.appendChild(btn);
+//         btn.addEventListener("click", function(event){
+//             controllerRef.editCookieClicked(event.target)
+//         }, false);
+        btn = controllerRef.createEditButton();
         cell.appendChild(btn);
         btn.addEventListener("click", function(event){
             controllerRef.editCookieClicked(event.target)
         }, false);
-  
     }
 
     hideSection(){
@@ -119,25 +123,16 @@ class DetailsInfoController{
     }
     
     editCookieClicked(clickedBtn){
-//         this.view.removeTableRow(rowIndex - 1);
-//         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
-//         this.addDomainToBlockedAndPurge(domainName);
-        let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
-        let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.innerHTML;
         
-        
         let input = document.createElement("INPUT");
-        input.className = "from-control";
+        input.className = "form-control";
         input.type = "text";
         input.value = cookieValue;
-        input.name = domainNode.innerHTML + ";" + nameNode.innerHTML;
+//         input.name = domainNode.innerHTML + ";" + nameNode.innerHTML;
         
         valueNode.replaceChild(input, valueNode.childNodes[0]);
-//         valueNode.innerHTML = `
-//             <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
-// `;
         
         let btn = document.createElement("BUTTON");
         btn.innerHTML = "save";
@@ -151,25 +146,50 @@ class DetailsInfoController{
     }
     
     updateCookieClicked(clickedBtn){
-//         this.view.removeTableRow(rowIndex - 1);
-//         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
-//         this.addDomainToBlockedAndPurge(domainName);
         let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
         let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
-        let cookieValue = valueNode.innerHTML;
-        valueNode.innerHTML = `
-            <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
-`;
-        clickedBtn.innerHTML = "save";
-        clickedBtn.className = "btn btn-success";
+        let cookieValue = valueNode.childNodes[0].value;
+        
+        let text = document.createTextNode(cookieValue);
+        valueNode.replaceChild(text, valueNode.childNodes[0]);
+        
+        let btn = this.createEditButton();
         
         let controllerRef = this;
         btn.addEventListener("click", function(event){
-            controllerRef.editCookieClicked(event.target)
+            controllerRef.updateCookieClicked(event.target)
         }, false);
+        clickedBtn.parentElement.replaceChild(btn, clickedBtn);
+        
+        
+        
+        
+// //         this.view.removeTableRow(rowIndex - 1);
+// //         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
+// //         this.addDomainToBlockedAndPurge(domainName);
+//         let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
+//         let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
+//         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
+//         let cookieValue = valueNode.innerHTML;
+//         valueNode.innerHTML = `
+//             <input type="text" name="${domainNode.innerHTML};${nameNode.innerHTML}" value="${cookieValue}" class="form-control" />
+// `;
+//         clickedBtn.innerHTML = "save";
+//         clickedBtn.className = "btn btn-success";
+        
+//         let controllerRef = this;
+//         btn.addEventListener("click", function(event){
+//             controllerRef.editCookieClicked(event.target)
+//         }, false);
     }
     
+    createEditButton(){
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = "edit";
+        btn.className = "btn btn-info";
+        return btn;
+    }
 //     detailsDomainClicked(rowIndex){
 //         this.view.removeTableRow(rowIndex - 1);
 //         let domainName = this.model.removeDomainFromModel(rowIndex - 1);
