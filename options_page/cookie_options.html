@@ -2,7 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="../assets/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="options_style.css"> 
+    <link rel="stylesheet" type="text/css" href="options_style.css">
   </head>
   <body>
     <div class="container-fluid">
@@ -22,14 +22,15 @@
             <button id ="navbarStalkerInfo" type ="button" class="btn btn-dark">Cookie Analytics</button>
           </li>
           <li class ="nav-item">
-              <button id ="aboutOption" type ="button" class="btn btn-dark">About</button>
-            </li>
+              <button id ="navbarAbout" type ="button" class="btn btn-dark">About</button>
+          </li>
         </ul>
       </div>
     </nav>
 
     <div class="row">
       <div class="col-12">
+
     <div id=blockedDomainSection>
       <h2 id="blockedDomainsHeading">Blocked Domains</h2>
       <h4>Here you can view domains you've blocked through the extension and remove them from the blocked list</h4>
@@ -41,8 +42,8 @@
         <tbody id="blockedDomainTableBody">
         </tbody>
       </table>
-    
     </div>
+
     <div id="domainInfoSection">
       <h2>Domain Information</h2>
       <h4>This tab shows info about domains with cookies stored on your browser, and allows you to block a domain if you dont like the looks of it</h4>
@@ -56,7 +57,7 @@
         </tbody>
       </table>
     </div>
-    
+
     <div id="detailsInfoSection">
       <h2>Cookies</h2>
       <h4>This tab shows all the cookies stored and you can modify or delete cookies.</h4>
@@ -73,11 +74,11 @@
       </table>
       </div>
     </div>
-    
+
     <div id ="stalkerInfoSection">
       <h2>Page Analytic and Stalker Ranking</h2>
       <h4>
-        This shows collected data about how domains store third party tracking cookies, click any domain to see more information<br> 
+        This shows collected data about how domains store third party tracking cookies, click any domain to see more information<br>
         to learn more about how this is done and how you can contribute, click the about tab.
       </h4>
       <table class = "table" id="stalkerTable">
@@ -88,15 +89,41 @@
         <tbody>
         </tbody>
       </table>
+    </div>
+
+    <div id="aboutSection">
+      <h2>About the Extension</h2>
+      <h4>Members</h4>
+      <p>Group 6: Andy Congos, Jake Cheng, Sean Thellian, Tommy Faust, Zane Clymer</p>
+      <h4>Class</h4>
+      <p>CSE 4471 - Information Security (Fall 2018) (LEC 23776)</p>
+      <h4>Description</h4>
+      <p>
+        This project relates to information security in that when you browse the internet, cookies store your personal information and where you visited. The goal of this project was to give the user
+        of the extension a little more control over who has access to that information. We set out 2 main functional objectives:
+      </p>
+      <ol>
+        <li>Popup: Have a popup to let you block and delete cookies most recently added</li>
+        <li>Extension's Page: Allow blocking, unblocking, deleting, and spoofing of any cookie stored in the browser</li>
+      </ol>
+      <p>
+        The popup is to allow the user to on the fly delete or block unwanted cookies recently stored on the browser. This allows for a quicker way to navigate the internet, rather than going to the
+        extension page each time. The extension page itself though has the main functionality control for the extension. Here you can view a list of blocked and unblocked domains, as well as delete
+        and modify currently stored cookie data. You can finally view Cookie Analytics. This tab allows you to view which domains store 3rd party cookies on your browser. Enjoy the extension and safe
+        browsing!
+      </p>
+    </div>
+
       </div>
-      </div>
-      </div>
+    </div>
+
     <script src="../js/CookieDataManager.js"></script>
     <script src="StalkerDataDisplayMVC.js"></script>
     <script src=BlockedDomainsMVC.js></script>
+    <script src=AboutMVC.js></script>
     <script src=DomainInfoMVC.js></script>
     <script src=DetailsInfoMVC.js></script>
     <script src="SuperController.js"></script>
   </body>
-  
+
 </html>
