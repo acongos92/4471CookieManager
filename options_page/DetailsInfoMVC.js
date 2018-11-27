@@ -155,8 +155,12 @@ class DetailsInfoController{
         let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.childNodes[0].value;
+        
         var cookieToUpdate = this.model.getCookieFromModel(rowIndex);
         cookieToUpdate.value = cookieValue;
+        cookieToUpdate.httpOnly = !cookieToUpdate.hostOnly;
+        delete(cookieToUpdate.hostOnly);
+        delete(cookieToUpdate.session);
         
         let controllerRef = this;
         
@@ -197,6 +201,8 @@ class DetailsInfoController{
     }
 
     setCookie(cookie, callback){
+        let qualifiedDomain = "https://" + cookie.domain;
+        cookie.url = qualifiedDomain;
         chrome.cookies.set(cookie, callback);
     }
 //     setCookie(cookieName, cookieValue, cookieDomain, callback){
