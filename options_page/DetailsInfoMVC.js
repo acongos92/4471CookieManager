@@ -163,10 +163,10 @@ class DetailsInfoController{
         delete(cookieToUpdate.session);
         
         let controllerRef = this;
-        
+        let chromeRef = chrome;
         let callback = function(result){
             if(!result){
-                alert(chrome.runtime.lastError);
+                alert(chromeRef.runtime.lastError);
                 return;
             }
             let text = document.createTextNode(cookieValue);
