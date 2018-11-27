@@ -156,17 +156,21 @@ class DetailsInfoController{
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.childNodes[0].value;
         
-        var cookieToUpdate = this.model.getCookieFromModel(rowIndex);
-        cookieToUpdate.value = cookieValue;
-        cookieToUpdate.httpOnly = !cookieToUpdate.hostOnly;
-        delete(cookieToUpdate.hostOnly);
-        delete(cookieToUpdate.session);
+        let oldCookie = this.model.getCookieFromModel(rowIndex);
+        var newCookie = {};
+        newCookie.name = oldCookie.name;
+        newCookie.value = cookieValue;
+        newCookie.httpOnly = oldCookie.httpOnly;
+        newCookie.secure = oldCookie.secure;
+        newCookie.expirationDate = oldCookie.expirationDate;
+        newCookie.domain = oldCookie.domain;
+        newCookie.path = oldCookie.path;
         
         let controllerRef = this;
         let chromeRef = chrome;
         let callback = function(result){
             if(!result){
-                alert(chromeRef.runtime.lastError);
+                alert("Error:" + chromeRef.runtime.lastError);
                 return;
             }
             let text = document.createTextNode(cookieValue);
@@ -179,7 +183,7 @@ class DetailsInfoController{
             }, false);
             clickedBtn.parentElement.replaceChild(btn, clickedBtn);
         };
-        this.setCookie(cookieToUpdate, callback);
+        this.setCookie(newCookie, callback);
     }
     
     createEditButton(){
