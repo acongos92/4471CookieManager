@@ -25,6 +25,10 @@ class DetailsInfoModel{
        return this.cookies[rowIndex];
     }
     
+    setCookieInModel(rowIndex, cookie){
+       this.cookies[rowIndex - 1] = cookie;
+    }
+    
      /*
       * "private" methods
       */ 
@@ -160,11 +164,11 @@ class DetailsInfoController{
         var newCookie = {};
         newCookie.name = oldCookie.name;
         newCookie.value = cookieValue;
-        newCookie.httpOnly = oldCookie.httpOnly;
-        newCookie.secure = oldCookie.secure;
-        newCookie.expirationDate = oldCookie.expirationDate;
+//         newCookie.httpOnly = oldCookie.httpOnly;
+//         newCookie.secure = oldCookie.secure;
+//         newCookie.expirationDate = oldCookie.expirationDate;
         newCookie.domain = oldCookie.domain;
-        newCookie.path = oldCookie.path;
+//         newCookie.path = oldCookie.path;
         
         let controllerRef = this;
         let chromeRef = chrome;
@@ -173,6 +177,7 @@ class DetailsInfoController{
                 alert("Error:" + chromeRef.runtime.lastError);
                 return;
             }
+            
             let text = document.createTextNode(cookieValue);
             valueNode.replaceChild(text, valueNode.childNodes[0]);
 
