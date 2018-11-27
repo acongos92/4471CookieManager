@@ -188,6 +188,8 @@ class DetailsInfoController{
                 controllerRef.editCookieClicked(event.target)
             }, false);
             clickedBtn.parentElement.replaceChild(btn, clickedBtn);
+            
+            controllerRef.model.setCookieInModel = result;
         };
         this.setCookie(newCookie, callback);
     }
