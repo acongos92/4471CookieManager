@@ -57,12 +57,12 @@ class DetailsInfoView{
         let cell = row.insertCell(0);
         cell.innerHTML = cookie.domain;
         
-        cell = row.insertCell(2);
-        cell.innerHTML = cookie.name;
-        cell.className = "text-truncate";
-        
         cell = row.insertCell(1);
         cell.innerHTML = cookie.httpOnly ? "Yes" : "No";
+        cell.className = "text-truncate";
+        
+        cell = row.insertCell(2);
+        cell.innerHTML = cookie.name;
         cell.className = "text-truncate";
         
         cell = row.insertCell(3);
