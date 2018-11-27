@@ -58,18 +58,14 @@ class DetailsInfoView{
         cell.innerHTML = cookie.domain;
         
         cell = row.insertCell(1);
-        cell.innerHTML = cookie.httpOnly ? "Yes" : "No";
-        cell.className = "text-truncate";
-        
-        cell = row.insertCell(2);
         cell.innerHTML = cookie.name;
         cell.className = "text-truncate";
         
-        cell = row.insertCell(3);
+        cell = row.insertCell(2);
         cell.innerHTML = cookie.value;
         cell.className = "text-truncate";
         
-        cell = row.insertCell(4);
+        cell = row.insertCell(3);
         
         let controllerRef = this.controller;
         
@@ -84,6 +80,14 @@ class DetailsInfoView{
         btn.addEventListener("click", function(event){
             controllerRef.editCookieClicked(event.target)
         }, false);
+        
+        cell = row.insertCell(4);
+        cell.innerHTML = cookie.httpOnly ? "Yes" : "No";
+        cell.className = "text-truncate";
+        
+        cell = row.insertCell(5);
+        cell.innerHTML = cookie.secure ? "Yes" : "No";
+        cell.className = "text-truncate";
     }
 
     hideSection(){
