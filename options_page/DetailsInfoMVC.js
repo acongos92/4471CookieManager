@@ -20,7 +20,11 @@ class DetailsInfoModel{
         this.cookies.splice(rowIndex, 1);
         return cookie;
     }
-
+    
+    getCookieFromModel(rowIndex){
+       return this.cookies[rowIndex];
+    }
+    
      /*
       * "private" methods
       */ 
@@ -78,7 +82,7 @@ class DetailsInfoView{
         btn = controllerRef.createEditButton();
         cell.appendChild(btn);
         btn.addEventListener("click", function(event){
-            controllerRef.editCookieClicked(event.target)
+            controllerRef.editCookieClicked(event.target, row.rowIndex)
         }, false);
         
         cell = row.insertCell(4);
@@ -119,7 +123,7 @@ class DetailsInfoController{
         this.deleteCookieFromStorage(cookie.name, cookie.domain);
     }
     
-    editCookieClicked(clickedBtn){
+    editCookieClicked(clickedBtn, rowIndex){
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.innerHTML;
         
@@ -141,16 +145,18 @@ class DetailsInfoController{
         
         let controllerRef = this;
         btn.addEventListener("click", function(event){
-            controllerRef.updateCookieClicked(event.target)
+            controllerRef.updateCookieClicked(event.target, rowIndex)
         }, false);
         clickedBtn.parentElement.replaceChild(btn, clickedBtn);
     }
     
-    updateCookieClicked(clickedBtn){
+    updateCookieClicked(clickedBtn, rowIndex){
         let domainNode = clickedBtn.parentElement.parentElement.childNodes[0];
         let nameNode = clickedBtn.parentElement.parentElement.childNodes[1];
         let valueNode = clickedBtn.parentElement.parentElement.childNodes[2];
         let cookieValue = valueNode.childNodes[0].value;
+        var cookieToUpdate = this.model.getCookieFromModel(rowIndex);
+        cookieToUpdate.value = cookieValue;
         
         let controllerRef = this;
         
@@ -169,7 +175,7 @@ class DetailsInfoController{
             }, false);
             clickedBtn.parentElement.replaceChild(btn, clickedBtn);
         };
-        this.setCookie(nameNode.innerHTML, cookieValue, domainNode.innerHTML, callback);
+        this.setCookie(cookieToUpdate, callback);
     }
     
     createEditButton(){
@@ -190,10 +196,13 @@ class DetailsInfoController{
         });
     }
 
-    setCookie(cookieName, cookieValue, cookieDomain, callback){
-        let qualifiedDomain = "https://" + cookieDomain;
-        chrome.cookies.set({"url" : qualifiedDomain, "name" : cookieName, "value" : cookieValue}, callback);
+    setCookie(cookie, callback){
+        chrome.cookies.set(cookie, callback);
     }
+//     setCookie(cookieName, cookieValue, cookieDomain, callback){
+//         let qualifiedDomain = "https://" + cookieDomain;
+//         chrome.cookies.set({"url" : qualifiedDomain, "name" : cookieName, "value" : cookieValue}, callback);
+//     }
 
     deleteCookieFromStorage(cookieName, cookieDomain){
         let qualifiedDomain = "https://" + cookieDomain;
