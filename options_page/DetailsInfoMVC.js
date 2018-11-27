@@ -155,7 +155,10 @@ class DetailsInfoController{
         let controllerRef = this;
         
         let callback = function(result){
- 
+            if(!result){
+                alert(chrome.runtime.lastError);
+                return;
+            }
             let text = document.createTextNode(cookieValue);
             valueNode.replaceChild(text, valueNode.childNodes[0]);
 
