@@ -22,6 +22,7 @@ class DetailsInfoModel{
     }
     
     getCookieFromModel(rowIndex){
+       rowIndex = this.cookies.length == 1 ? 0 : rowIndex - 1;
        return this.cookies[rowIndex];
     }
     
@@ -164,11 +165,11 @@ class DetailsInfoController{
         var newCookie = {};
         newCookie.name = oldCookie.name;
         newCookie.value = cookieValue;
-//         newCookie.httpOnly = oldCookie.httpOnly;
-//         newCookie.secure = oldCookie.secure;
+        newCookie.httpOnly = oldCookie.httpOnly;
+        newCookie.secure = oldCookie.secure;
 //         newCookie.expirationDate = oldCookie.expirationDate;
         newCookie.domain = oldCookie.domain;
-//         newCookie.path = oldCookie.path;
+        newCookie.path = oldCookie.path;
         
         let controllerRef = this;
         let chromeRef = chrome;
