@@ -62,10 +62,14 @@ class DetailsInfoView{
         cell.className = "text-truncate";
         
         cell = row.insertCell(2);
-        cell.innerHTML = cookie.value;
+        cell.innerHTML = cookie.httpOnly ? "Yes" : "No";
         cell.className = "text-truncate";
         
         cell = row.insertCell(3);
+        cell.innerHTML = cookie.value;
+        cell.className = "text-truncate";
+        
+        cell = row.insertCell(4);
         
         let controllerRef = this.controller;
         
