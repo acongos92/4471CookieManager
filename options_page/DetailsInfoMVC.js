@@ -149,8 +149,9 @@ class DetailsInfoController{
         btn.className = "btn btn-success";
         
         let controllerRef = this;
+        let rowNumber = rowIndex;
         btn.addEventListener("click", function(event){
-            controllerRef.updateCookieClicked(event.target, rowIndex)
+            controllerRef.updateCookieClicked(event.target, rowNumber)
         }, false);
         clickedBtn.parentElement.replaceChild(btn, clickedBtn);
     }
